@@ -1,0 +1,315 @@
+{
+  "@context": {
+    "@vocab": "https://aalang.org/spec/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "ex": "https://aalang.dev/example/"
+  },
+  "schema:license": "LICENSE",
+  "schema:copyrightHolder": {
+    "@type": "schema:Person",
+    "schema:name": "Lee S. Barney"
+  },
+  "schema:copyrightYear": "2025",
+  "@graph": [
+    {
+      "@id": "ex:AssessmentRubric",
+      "@type": "Rubric",
+      "rdfs:label": "Assessment Rubric",
+      "description": "This rubric is to be applied to all user answers for questions in all Modes.",
+      "scope": "all user answers for questions in all Modes",
+      "levels": [
+        {"@id": "ex:NotYetReady"},
+        {"@id": "ex:Competent"},
+        {"@id": "ex:Exceptional"}
+      ],
+      "principles": {"@id": "ex:PrinciplesOfBeautifulCode"}
+    },
+    {
+      "@id": "ex:NotYetReady",
+      "@type": "RubricLevel",
+      "rdfs:label": "Not Yet Ready",
+      "levelNumber": 1,
+      "rules": {
+        "conceptualAnswer": {
+          "description": "The explanation contains significant factual errors, is overly simplistic, or demonstrates a fundamental misunderstanding of the data structure's purpose or mechanism. The user cannot articulate why or when to use the structure, or appears to be hiding a lack of understanding behind technical jargon.",
+          "indicators": [
+            "significant factual errors",
+            "overly simplistic",
+            "fundamental misunderstanding of the data structure's purpose or mechanism",
+            "cannot articulate why or when to use the structure",
+            "appears to be hiding a lack of understanding behind technical jargon"
+          ]
+        },
+        "codeAnswer": {
+          "description": "The code is non-functional, contains major syntax or logic errors, fails to implement the core requirements of the data structure, or completely misses the prompt.",
+          "indicators": [
+            "non-functional",
+            "contains major syntax or logic errors",
+            "fails to implement the core requirements of the data structure",
+            "completely misses the prompt"
+          ]
+        },
+        "aiUseAnswer": {
+          "description": "The user describes a process of copying code from an AI without understanding it, or cannot explain how they verified the AI's output. The use is unethical or demonstrates a dependency that inhibits learning.",
+          "indicators": [
+            "copying code from an AI without understanding it",
+            "cannot explain how they verified the AI's output",
+            "unethical use",
+            "demonstrates a dependency that inhibits learning"
+          ]
+        }
+      },
+      "studentExamples": [
+        {
+          "@id": "ex:NotYetReadyExample1",
+          "question": "Describe the purpose of a deque.",
+          "exampleAnswer": "A deque is a list where you can add things to both sides. It's like two lists put together.",
+          "analysis": {
+            "rating": "Not Yet Ready",
+            "issues": [
+              "too vague",
+              "misses key terminology like 'double-ended queue'",
+              "fails to explain why this capability is useful",
+              "fails to explain performance characteristics",
+              "the 'two lists' analogy is confusing and imprecise"
+            ]
+          }
+        },
+        {
+          "@id": "ex:NotYetReadyExample2",
+          "question": "Provide an efficient Elixir implementation for a function that removes an element from the front of a deque. Include the definition of the deque data structure you are using.",
+          "exampleAnswer": "def remove_front(deque) do\n  # Incorrectly treats the tuple as a single list.\n  List.first(deque)\nend",
+          "language": "Elixir",
+          "analysis": {
+            "rating": "Not Yet Ready",
+            "issues": [
+              "code fails because it attempts to use a list function on the tuple itself",
+              "demonstrates a misunderstanding of Elixir's basic data types",
+              "doesn't return the element and the new state of the deque as required"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "@id": "ex:Competent",
+      "@type": "RubricLevel",
+      "rdfs:label": "Competent",
+      "levelNumber": 2,
+      "rules": {
+        "conceptualAnswer": {
+          "description": "The explanation is factually correct and covers the main points. The user can clearly define the data structure, its primary use case, and provide a correct, simple example. The answer is solid and accurate, but may lack depth on performance trade-offs or comparisons to other structures.",
+          "indicators": [
+            "factually correct",
+            "covers the main points",
+            "can clearly define the data structure",
+            "can identify primary use case",
+            "can provide a correct, simple example",
+            "solid and accurate",
+            "may lack depth on performance trade-offs",
+            "may lack comparisons to other structures"
+          ]
+        },
+        "codeAnswer": {
+          "description": "The code is complete, functional, correctly implements the requested features, and follows the prompt. It is a standard, working implementation. It may lack robust error handling, detailed comments, or optimization for edge cases.",
+          "indicators": [
+            "complete",
+            "functional",
+            "correctly implements the requested features",
+            "follows the prompt",
+            "standard, working implementation",
+            "may lack robust error handling",
+            "may lack detailed comments",
+            "may lack optimization for edge cases"
+          ]
+        },
+        "aiUseAnswer": {
+          "description": "The user describes using an AI to generate boilerplate code, debug a specific error, or explain a concept. They can articulate how they tested and integrated the AI's suggestion into their own work, demonstrating a healthy, supplemental use of the tool.",
+          "indicators": [
+            "using AI to generate boilerplate code",
+            "using AI to debug a specific error",
+            "using AI to explain a concept",
+            "can articulate how they tested the AI's suggestion",
+            "can articulate how they integrated the AI's suggestion into their own work",
+            "demonstrates healthy, supplemental use of the tool"
+          ]
+        }
+      },
+      "studentExamples": [
+        {
+          "@id": "ex:CompetentExample1",
+          "question": "Describe the purpose of a deque.",
+          "exampleAnswer": "A deque, or a double-ended queue, is a data structure that lets you add and remove elements from both the front and the back in constant time. It's like a combination of a stack and a queue.",
+          "analysis": {
+            "rating": "Competent",
+            "strengths": [
+              "correct and standard definition",
+              "accurately identifies the core operations",
+              "provides the common name",
+              "provides a good analogy to stacks and queues"
+            ]
+          }
+        },
+        {
+          "@id": "ex:CompetentExample2",
+          "question": "Provide an efficient Elixir implementation for a function that removes an element from the front of a deque. Include the definition of the deque data structure you are using.",
+          "exampleAnswer": "defmodule Deque do\n  # Returns {:ok, {value, new_deque}} | {:empty, deque}\n  def remove_front({[], []}) do\n    {:empty, {[], []}}\n  end\n\n  def remove_front({[h | t], r}) do\n    {:ok, {h, {t, r}}}\n  end\n\n  def remove_front({[], r}) do\n    case Enum.reverse(r) do\n      [h | t] -> {:ok, {h, {t, []}}}\n    end\n  end\nend",
+          "language": "Elixir",
+          "analysis": {
+            "rating": "Competent",
+            "strengths": [
+              "complete and correct implementation",
+              "handles all cases: an empty deque",
+              "handles deque with elements in the front list",
+              "handles the crucial case where the front list is empty and the rear list must be reversed and moved to the front",
+              "demonstrates a solid understanding of the amortized O(1) approach"
+            ],
+            "reasoning": "It's considered 'Competent' because while functionally correct, it lacks the documentation, typespecs, and doctests that would make it 'Exceptional' and easier for other developers to use and maintain."
+          }
+        }
+      ]
+    },
+    {
+      "@id": "ex:Exceptional",
+      "@type": "RubricLevel",
+      "rdfs:label": "Exceptional",
+      "levelNumber": 3,
+      "rules": {
+        "conceptualAnswer": {
+          "description": "The explanation is correct, clear, and comprehensive. The user not only defines the structure but also thoughtfully discusses its performance characteristics (including best, average, and worst-case scenarios), its trade-offs compared to other data structures, and nuanced real-world applications. They demonstrate a deep, practical understanding.",
+          "indicators": [
+            "correct",
+            "clear",
+            "comprehensive",
+            "defines the structure",
+            "thoughtfully discusses performance characteristics",
+            "includes best-case scenarios",
+            "includes average-case scenarios",
+            "includes worst-case scenarios",
+            "discusses trade-offs compared to other data structures",
+            "discusses nuanced real-world applications",
+            "demonstrates deep, practical understanding"
+          ]
+        },
+        "codeAnswer": {
+          "description": "The code is not only complete and functional but also robust, efficient, and demonstrates the Principles of Beautiful Code. It is Distilled (no extraneous logic), Structured (layout reflects the solution's design), and Compassionate (easy for others to read and understand). It includes clear comments, handles edge cases (e.g., empty lists, collisions), and may show Audacious or Original approaches to the problem.",
+          "indicators": [
+            "complete",
+            "functional",
+            "robust",
+            "efficient",
+            "demonstrates Principles of Beautiful Code",
+            "Distilled: no extraneous logic",
+            "Structured: layout reflects the solution's design",
+            "Compassionate: easy for others to read and understand",
+            "includes clear comments",
+            "handles edge cases (e.g., empty lists, collisions)",
+            "may show Audacious approaches",
+            "may show Original approaches to the problem"
+          ]
+        },
+        "aiUseAnswer": {
+          "description": "The user provides a sophisticated description of leveraging AI as a collaborative partner. For example, they might describe prompting an AI to critique their code, suggest alternative implementations with different trade-offs, or generate test cases to validate their logic. They demonstrate a strategic use of AI to deepen their own understanding and improve code quality.",
+          "indicators": [
+            "sophisticated description of leveraging AI as a collaborative partner",
+            "prompting AI to critique their code",
+            "prompting AI to suggest alternative implementations with different trade-offs",
+            "prompting AI to generate test cases to validate their logic",
+            "demonstrates strategic use of AI",
+            "deepens their own understanding",
+            "improves code quality"
+          ],
+          "examples": [
+            "prompting an AI to critique their code",
+            "suggesting alternative implementations with different trade-offs",
+            "generating test cases to validate their logic"
+          ]
+        }
+      },
+      "studentExamples": [
+        {
+          "@id": "ex:ExceptionalExample1",
+          "question": "Describe the purpose of a deque.",
+          "exampleAnswer": "A deque, or double-ended queue, is a linear data structure that allows efficient O(1) insertion and deletion at both ends. This makes it ideal for algorithms where items need to be processed from either direction, such as in sliding window problems or as the foundation for a work-stealing scheduler. Unlike a standard queue (FIFO) or stack (LIFO), a deque provides the flexibility of both. This usually comes at the cost of a more complex underlying implementation, often using a dynamic array with head/tail pointers or, in functional languages, a pair of lists to balance performance.",
+          "analysis": {
+            "rating": "Exceptional",
+            "strengths": [
+              "comprehensive",
+              "provides correct definition",
+              "provides time complexity",
+              "provides specific and relevant use cases (sliding window, work-stealing)",
+              "discusses implementation trade-offs",
+              "discusses comparisons to other structures"
+            ]
+          }
+        },
+        {
+          "@id": "ex:ExceptionalExample2",
+          "question": "Provide an efficient Elixir implementation for a function that removes an element from the front of a deque. Include the definition of the deque data structure you are using.",
+          "exampleAnswer": "defmodule Deque do\n  @typedoc \"A double-ended queue, implemented with two lists for amortized O(1) operations.\"\n  @type t :: {[any], [any]}\n\n  @doc \"\"\"\n  Removes an element from the front of the deque.\n\n  Rebalances the deque if the front list is empty to maintain O(1) amortized time.\n\n  ## Returns\n    * `{:ok, {value, new_deque}}`\n    * `{:empty, deque}`\n\n  ## Examples\n      iex> Deque.remove_front({[], []})\n      {:empty, {[], []}}\n\n      iex> Deque.remove_front({[:a, :b], [:c]})\n      {:ok, {:a, {[:b], [:c]}}}\n\n      iex> Deque.remove_front({[], [:a, :b, :c]})\n      {:ok, {:c, {[:b, :a], []}}}\n  \"\"\"\n  @spec remove_front(t()) :: {:ok, {any(), t()}} | {:empty, t()}\n  def remove_front({[], []}), do: {:empty, {[], []}}\n\n  def remove_front({[h | t], r}) do\n    {:ok, {h, {t, r}}}\n  end\n\n  def remove_front({[], r}) do\n    case Enum.reverse(r) do\n      [h | t] -> {:ok, {h, {t, []}}}\n    end\n  end\nend",
+          "language": "Elixir",
+          "analysis": {
+            "rating": "Exceptional",
+            "strengths": [
+              "robust",
+              "efficient",
+              "correct",
+              "handles all cases",
+              "includes crucial rebalancing logic where Enum.reverse is used on the rear list",
+              "correctly identifies that while reverse is an O(n) operation, it happens so infrequently that its cost is spread across many O(1) operations, achieving the required amortized O(1) performance",
+              "Compassionate: with typespecs, doctests, and clear documentation",
+              "Structured: clear layout"
+            ],
+            "performanceAnalysis": "The analysis correctly identifies that while reverse is an O(n) operation, it happens so infrequently that its cost is spread across many O(1) operations, achieving the required amortized O(1) performance.",
+            "codeQuality": "The code is Compassionate and Structured, with typespecs, doctests, and clear documentation."
+          }
+        }
+      ]
+    },
+    {
+      "@id": "ex:PrinciplesOfBeautifulCode",
+      "@type": "Concept",
+      "rdfs:label": "Principles of Beautiful Code",
+      "principles": [
+        {
+          "@id": "ex:Distilled",
+          "name": "Distilled",
+          "description": "There is nothing extraneous or verbose. Every line, symbol, and structure serves a purpose."
+        },
+        {
+          "@id": "ex:Balanced",
+          "name": "Balanced",
+          "description": "Calculations are distributed wisely—not too complex in one spot, not too fragmented elsewhere."
+        },
+        {
+          "@id": "ex:Harmonious",
+          "name": "Harmonious",
+          "description": "Units of computation (like functions or lambdas) fit together clearly, with no cognitive dissonance."
+        },
+        {
+          "@id": "ex:AudaciousAndOriginal",
+          "name": "Audacious & Original",
+          "description": "It surprises the reader—in a good way—by revealing novel or clever approaches to a problem."
+        },
+        {
+          "@id": "ex:Imagery",
+          "name": "Imagery",
+          "description": "Names (for functions, data, processes) paint clear pictures. They inform, guide, and enhance understanding."
+        },
+        {
+          "@id": "ex:Structured",
+          "name": "Structured",
+          "description": "The layout and design of the code reflect the structure of the solution. It's tidy and intentional."
+        },
+        {
+          "@id": "ex:Compassionate",
+          "name": "Compassionate",
+          "description": "Beautiful code cares about the reader. It guides gently, is easy to follow, and reduces friction or frustration."
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,320 @@
+{
+  "@context": {
+    "@vocab": "https://aalang.org/spec/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "ex": "https://aalang.dev/example/"
+  },
+  "schema:license": "LICENSE",
+  "schema:copyrightHolder": {
+    "@type": "schema:Person",
+    "schema:name": "Lee S. Barney"
+  },
+  "schema:copyrightYear": "2025",
+  "@graph": [
+    {
+      "@id": "ex:PatternsAssessmentRubric",
+      "@type": "Rubric",
+      "rdfs:label": "Patterns Assessment Rubric",
+      "description": "This rubric is to be applied to all user answers for questions about functional programming patterns in all Modes.",
+      "scope": "all user answers for questions about functional programming patterns in all Modes",
+      "levels": [
+        {"@id": "ex:Patterns_NotYetReady"},
+        {"@id": "ex:Patterns_Competent"},
+        {"@id": "ex:Patterns_Exceptional"}
+      ],
+      "principles": {"@id": "ex:PrinciplesOfBeautifulCode"}
+    },
+    {
+      "@id": "ex:Patterns_NotYetReady",
+      "@type": "RubricLevel",
+      "rdfs:label": "Not Yet Ready",
+      "levelNumber": 1,
+      "rules": {
+        "conceptualAnswer": {
+          "description": "The explanation contains significant factual errors, is overly simplistic, or demonstrates a fundamental misunderstanding of the pattern's purpose, laws, or mechanism. The user cannot articulate why or when to use the pattern, or appears to be hiding a lack of understanding behind technical jargon.",
+          "indicators": [
+            "significant factual errors",
+            "overly simplistic",
+            "fundamental misunderstanding of the pattern's purpose, laws, or mechanism",
+            "cannot articulate why or when to use the pattern",
+            "appears to be hiding a lack of understanding behind technical jargon"
+          ]
+        },
+        "codeAnswer": {
+          "description": "The code is non-functional, contains major syntax or logic errors, fails to implement the core requirements or laws of the pattern, or completely misses the prompt.",
+          "indicators": [
+            "non-functional",
+            "contains major syntax or logic errors",
+            "fails to implement the core requirements or laws of the pattern",
+            "completely misses the prompt"
+          ]
+        },
+        "aiUseAnswer": {
+          "description": "The user describes a process of copying code from an AI without understanding it, or cannot explain how they verified the AI's output. The use is unethical or demonstrates a dependency that inhibits learning.",
+          "indicators": [
+            "copying code from an AI without understanding it",
+            "cannot explain how they verified the AI's output",
+            "unethical use",
+            "demonstrates a dependency that inhibits learning"
+          ]
+        }
+      },
+      "studentExamples": [
+        {
+          "@id": "ex:Patterns_NotYetReadyExample1",
+          "question": "Describe the purpose of a Functor.",
+          "exampleAnswer": "A functor is like a wrapper that you can map over. It's basically a container with a map function.",
+          "analysis": {
+            "rating": "Not Yet Ready",
+            "issues": [
+              "too vague and imprecise",
+              "misses key terminology about identity and composition laws",
+              "fails to explain the mathematical foundations",
+              "fails to explain why functors are useful in functional programming",
+              "the 'wrapper' analogy is incomplete and doesn't capture the essence of functors"
+            ]
+          }
+        },
+        {
+          "@id": "ex:Patterns_NotYetReadyExample2",
+          "question": "Provide an implementation of the identity law for a Functor pattern. Include a function that demonstrates this law holds.",
+          "exampleAnswer": "def identity_functor(data) do\n  map(data, fn x -> x end)\nend",
+          "language": "Elixir",
+          "analysis": {
+            "rating": "Not Yet Ready",
+            "issues": [
+              "code is incomplete - doesn't show the law being tested",
+              "demonstrates a misunderstanding of what the identity law means",
+              "doesn't verify that applying identity returns the original data unchanged",
+              "fails to demonstrate the pattern's requirements"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "@id": "ex:Patterns_Competent",
+      "@type": "RubricLevel",
+      "rdfs:label": "Competent",
+      "levelNumber": 2,
+      "rules": {
+        "conceptualAnswer": {
+          "description": "The explanation is factually correct and covers the main points. The user can clearly define the pattern, its primary use case, and provide a correct, simple example. The answer is solid and accurate, but may lack depth on the pattern's laws, mathematical foundations, or comparisons to related patterns.",
+          "indicators": [
+            "factually correct",
+            "covers the main points",
+            "can clearly define the pattern",
+            "can identify primary use case",
+            "can provide a correct, simple example",
+            "solid and accurate",
+            "may lack depth on pattern laws",
+            "may lack mathematical foundations",
+            "may lack comparisons to related patterns"
+          ]
+        },
+        "codeAnswer": {
+          "description": "The code is complete, functional, correctly implements the requested features and respects the pattern's laws, and follows the prompt. It is a standard, working implementation. It may lack robust error handling, detailed comments, or demonstration of all pattern laws.",
+          "indicators": [
+            "complete",
+            "functional",
+            "correctly implements the requested features",
+            "respects the pattern's laws",
+            "follows the prompt",
+            "standard, working implementation",
+            "may lack robust error handling",
+            "may lack detailed comments",
+            "may lack demonstration of all pattern laws"
+          ]
+        },
+        "aiUseAnswer": {
+          "description": "The user describes using an AI to generate boilerplate code, debug a specific error, or explain a concept. They can articulate how they tested and integrated the AI's suggestion into their own work, demonstrating a healthy, supplemental use of the tool.",
+          "indicators": [
+            "using AI to generate boilerplate code",
+            "using AI to debug a specific error",
+            "using AI to explain a concept",
+            "can articulate how they tested the AI's suggestion",
+            "can articulate how they integrated the AI's suggestion into their own work",
+            "demonstrates healthy, supplemental use of the tool"
+          ]
+        }
+      },
+      "studentExamples": [
+        {
+          "@id": "ex:Patterns_CompetentExample1",
+          "question": "Describe the purpose of a Functor.",
+          "exampleAnswer": "A functor is a pattern that allows you to apply a function to values inside a container without changing the container's structure. Functors must follow two laws: the identity law (applying identity function returns unchanged) and the composition law (composing functions and then applying is the same as applying them separately). Lists are a common example of functors.",
+          "analysis": {
+            "rating": "Competent",
+            "strengths": [
+              "correct and standard definition",
+              "accurately identifies the core concept",
+              "mentions the two key laws",
+              "provides a concrete example (lists)"
+            ]
+          }
+        },
+        {
+          "@id": "ex:Patterns_CompetentExample2",
+          "question": "Provide an implementation of the identity law for a Functor pattern. Include a function that demonstrates this law holds.",
+          "exampleAnswer": "defmodule ListFunctor do\n  def identity_law(list) do\n    identity = fn x -> x end\n    mapped = Enum.map(list, identity)\n    mapped == list\n  end\nend",
+          "language": "Elixir",
+          "analysis": {
+            "rating": "Competent",
+            "strengths": [
+              "complete and correct implementation",
+              "demonstrates understanding of the identity law",
+              "uses a concrete functor (list) to show the law",
+              "verifies that identity function returns unchanged data"
+            ],
+            "reasoning": "It's considered 'Competent' because while functionally correct and demonstrates the law, it lacks the documentation, property-based testing, and demonstration of edge cases that would make it 'Exceptional'."
+          }
+        }
+      ]
+    },
+    {
+      "@id": "ex:Patterns_Exceptional",
+      "@type": "RubricLevel",
+      "rdfs:label": "Exceptional",
+      "levelNumber": 3,
+      "rules": {
+        "conceptualAnswer": {
+          "description": "The explanation is correct, clear, and comprehensive. The user not only defines the pattern but also thoughtfully discusses its mathematical foundations, all required laws (including proofs or demonstrations), its relationships to other patterns (e.g., how Monad extends Functor), and nuanced real-world applications. They demonstrate a deep, practical understanding of when and why to use the pattern.",
+          "indicators": [
+            "correct",
+            "clear",
+            "comprehensive",
+            "defines the pattern",
+            "thoughtfully discusses mathematical foundations",
+            "discusses all required laws",
+            "provides proofs or demonstrations of laws",
+            "discusses relationships to other patterns",
+            "discusses nuanced real-world applications",
+            "demonstrates deep, practical understanding"
+          ]
+        },
+        "codeAnswer": {
+          "description": "The code is not only complete and functional but also robust, efficient, and demonstrates the Principles of Beautiful Code. It correctly implements all pattern laws, includes property-based tests, handles edge cases, and demonstrates understanding of when the pattern is appropriate. It is Distilled (no extraneous logic), Structured (layout reflects the solution's design), and Compassionate (easy for others to read and understand).",
+          "indicators": [
+            "complete",
+            "functional",
+            "robust",
+            "efficient",
+            "demonstrates Principles of Beautiful Code",
+            "correctly implements all pattern laws",
+            "includes property-based tests",
+            "handles edge cases",
+            "demonstrates understanding of when pattern is appropriate",
+            "Distilled: no extraneous logic",
+            "Structured: layout reflects the solution's design",
+            "Compassionate: easy for others to read and understand",
+            "includes clear comments",
+            "may show Audacious approaches",
+            "may show Original approaches to the problem"
+          ]
+        },
+        "aiUseAnswer": {
+          "description": "The user provides a sophisticated description of leveraging AI as a collaborative partner. For example, they might describe prompting an AI to critique their pattern implementation, suggest alternative implementations with different trade-offs, or generate test cases to validate pattern laws. They demonstrate a strategic use of AI to deepen their own understanding and improve code quality.",
+          "indicators": [
+            "sophisticated description of leveraging AI as a collaborative partner",
+            "prompting AI to critique their pattern implementation",
+            "prompting AI to suggest alternative implementations with different trade-offs",
+            "prompting AI to generate test cases to validate pattern laws",
+            "demonstrates strategic use of AI",
+            "deepens their own understanding",
+            "improves code quality"
+          ],
+          "examples": [
+            "prompting an AI to critique their pattern implementation",
+            "suggesting alternative implementations with different trade-offs",
+            "generating test cases to validate pattern laws"
+          ]
+        }
+      },
+      "studentExamples": [
+        {
+          "@id": "ex:Patterns_ExceptionalExample1",
+          "question": "Describe the purpose of a Functor.",
+          "exampleAnswer": "A functor is a category-theoretic pattern that provides a way to apply functions to values inside a context (container) while preserving the structure of that context. Formally, a functor F maps from category C to category D, preserving composition and identity. In functional programming, this translates to two laws: (1) Identity: fmap(id) = id, meaning applying the identity function to a functor returns the functor unchanged, and (2) Composition: fmap(f ∘ g) = fmap(f) ∘ fmap(g), meaning composing functions then mapping is equivalent to mapping then composing. Functors are foundational - Monads are functors with additional structure (they're functors with join/return operations). Common examples include lists, Maybe, Either, and IO. They enable composition of operations without unwrapping values, making code more modular and reusable.",
+          "analysis": {
+            "rating": "Exceptional",
+            "strengths": [
+              "comprehensive",
+              "provides correct definition",
+              "explains mathematical foundations (category theory)",
+              "clearly states both laws with notation",
+              "explains relationship to Monads",
+              "provides multiple concrete examples",
+              "discusses practical benefits (modularity, reusability)"
+            ]
+          }
+        },
+        {
+          "@id": "ex:Patterns_ExceptionalExample2",
+          "question": "Provide an implementation of the identity law for a Functor pattern. Include a function that demonstrates this law holds.",
+          "exampleAnswer": "defmodule FunctorLaws do\n  @moduledoc \"\"\"\n  Demonstrates Functor laws with property-based testing.\n  \n  The identity law states: fmap(id) = id\n  For any functor f, applying the identity function should\n  return the functor unchanged.\n  \"\"\"\n  \n  @doc \"\"\"\n  Tests the identity law for list functors using property-based testing.\n  \n  ## Examples\n      iex> FunctorLaws.test_identity_law([])\n      true\n      \n      iex> FunctorLaws.test_identity_law([1, 2, 3])\n      true\n  \"\"\"\n  @spec test_identity_law(list()) :: boolean()\n  def test_identity_law(list) do\n    identity = fn x -> x end\n    \n    # Apply identity function via map (fmap)\n    mapped = Enum.map(list, identity)\n    \n    # Identity law: mapped should equal original\n    mapped == list\n  end\n  \n  @doc \"\"\"\n  Generalized identity law test that works with any functor.\n  Accepts a functor and a map function that implements fmap.\n  \"\"\"\n  @spec test_identity_law_generic(any(), (any(), (any() -> any()) -> any())) :: boolean()\n  def test_identity_law_generic(functor, fmap) do\n    identity = fn x -> x end\n    mapped = fmap.(functor, identity)\n    mapped == functor\n  end\nend",
+          "language": "Elixir",
+          "analysis": {
+            "rating": "Exceptional",
+            "strengths": [
+              "robust",
+              "correct",
+              "demonstrates deep understanding of the identity law",
+              "includes property-based testing approach",
+              "provides both specific (list) and generic implementations",
+              "Compassionate: with typespecs, doctests, and clear documentation",
+              "Structured: clear layout with modular design",
+              "includes mathematical explanation in documentation"
+            ],
+            "patternUnderstanding": "The implementation correctly demonstrates understanding that functors must preserve structure and that the identity law is fundamental to the pattern's definition.",
+            "codeQuality": "The code is Compassionate and Structured, with typespecs, doctests, clear documentation, and demonstrates both specific and generic applications of the pattern."
+          }
+        }
+      ]
+    },
+    {
+      "@id": "ex:PrinciplesOfBeautifulCode",
+      "@type": "Concept",
+      "rdfs:label": "Principles of Beautiful Code",
+      "principles": [
+        {
+          "@id": "ex:Distilled",
+          "name": "Distilled",
+          "description": "There is nothing extraneous or verbose. Every line, symbol, and structure serves a purpose."
+        },
+        {
+          "@id": "ex:Balanced",
+          "name": "Balanced",
+          "description": "Calculations are distributed wisely—not too complex in one spot, not too fragmented elsewhere."
+        },
+        {
+          "@id": "ex:Harmonious",
+          "name": "Harmonious",
+          "description": "Units of computation (like functions or lambdas) fit together clearly, with no cognitive dissonance."
+        },
+        {
+          "@id": "ex:AudaciousAndOriginal",
+          "name": "Audacious & Original",
+          "description": "It surprises the reader—in a good way—by revealing novel or clever approaches to a problem."
+        },
+        {
+          "@id": "ex:Imagery",
+          "name": "Imagery",
+          "description": "Names (for functions, data, processes) paint clear pictures. They inform, guide, and enhance understanding."
+        },
+        {
+          "@id": "ex:Structured",
+          "name": "Structured",
+          "description": "The layout and design of the code reflect the structure of the solution. It's tidy and intentional."
+        },
+        {
+          "@id": "ex:Compassionate",
+          "name": "Compassionate",
+          "description": "Beautiful code cares about the reader. It guides gently, is easy to follow, and reduces friction or frustration."
+        }
+      ]
+    }
+  ]
+}
+

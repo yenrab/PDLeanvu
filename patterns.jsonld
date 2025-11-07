@@ -1,0 +1,818 @@
+{
+  "@context": {
+    "@vocab": "https://aalang.org/spec/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "ex": "https://aalang.dev/example/"
+  },
+  "schema:license": "LICENSE",
+  "schema:copyrightHolder": {
+    "@type": "schema:Person",
+    "schema:name": "Lee S. Barney"
+  },
+  "schema:copyrightYear": "2025",
+  "@graph": [
+    {
+      "@id": "ex:PatternsDocument",
+      "@type": "Document",
+      "rdfs:label": "Functional Programming Patterns",
+      "patterns": [
+        {"@id": "ex:Functor"},
+        {"@id": "ex:Monoid"},
+        {"@id": "ex:Monad"},
+        {"@id": "ex:BeautifulCode"},
+        {"@id": "ex:Chaining"},
+        {"@id": "ex:Currying"},
+        {"@id": "ex:LazyComputation"},
+        {"@id": "ex:Memoization"},
+        {"@id": "ex:Composition"},
+        {"@id": "ex:State"},
+        {"@id": "ex:Factory"},
+        {"@id": "ex:AbstractFactory"},
+        {"@id": "ex:Builder"},
+        {"@id": "ex:Prototype"},
+        {"@id": "ex:Singleton"},
+        {"@id": "ex:Adapter"},
+        {"@id": "ex:Decorator"},
+        {"@id": "ex:Facade"},
+        {"@id": "ex:Proxy"},
+        {"@id": "ex:Flyweight"},
+        {"@id": "ex:ChainOfResponsibility"},
+        {"@id": "ex:Command"},
+        {"@id": "ex:Strategy"},
+        {"@id": "ex:Iterator"},
+        {"@id": "ex:TemplateMethod"},
+        {"@id": "ex:Observer"},
+        {"@id": "ex:Visitor"},
+        {"@id": "ex:Bridge"},
+        {"@id": "ex:Interpreter"},
+        {"@id": "ex:QueryResponsibilitySegregation"},
+        {"@id": "ex:EventSourcing"},
+        {"@id": "ex:PortsAndAdapters"},
+        {"@id": "ex:ClientServer"},
+        {"@id": "ex:EventDrivenArchitecture"},
+        {"@id": "ex:MV CArchitecture"},
+        {"@id": "ex:PipeAndFilterArchitecture"},
+        {"@id": "ex:Actor"}
+      ]
+    },
+    {
+      "@id": "ex:Functor",
+      "@type": "Pattern",
+      "rdfs:label": "Functor",
+      "description": "A functor is a set, list, tree, or some other data structure to which functionality without changing the order, relationship, between the elements of the data structure. Functional programming functors must have at least two parameters, data to act on and functionality to be applied to that data that changes the data. The fun For anything to be a functor, it must meet the following rules.",
+      "rules": [
+        {
+          "@id": "ex:Functor_Identity",
+          "rule": "a",
+          "description": "There must be an identity lambda function that can be applied to the functor. The identity lambda function must make no changes to the data passed to the functor.",
+          "pseudocode": {
+            "specification": "-spec some_functor :: any identity_lambda → any.",
+            "code": "some_functor data identity_lambda → data."
+          },
+          "mathematicalDescription": "S = \\{\\, f(x) \\mid x \\in S \\,\\}"
+        },
+        {
+          "@id": "ex:Functor_Composition",
+          "rule": "b",
+          "description": "A functor must be able to apply a composed function and achieve the same results as applying the individual functions separately and then composing their values.",
+          "pseudocode": [
+            {
+              "specification": "-spec some_functor :: (some_functor :: any a_lambda) other_lambda",
+              "code": "some_functor (some_functor :: data a_lambda) b_lambda"
+            },
+            {
+              "specification": "-spec some_functor :: any some_lambda",
+              "code": "some_functor data combined_code_lambda # combined_code_lambda has the combined behavior of both a_lambda and other_lambda"
+            }
+          ],
+          "mathematicalDescription": "functor :: a(f∘g) = (functor :: data a_lambda)∘(functor :: data b_lambda)"
+        },
+        {
+          "@id": "ex:Functor_Relations",
+          "rule": "c",
+          "description": "The relations between elements does not change when examining the items acted on by the functor, data, and those that are the value of the functor, results."
+        }
+      ],
+      "realLifeExamples": [
+        {
+          "description": "Conversion of data in a database (Category A) into data elements in a computer language (Category B).",
+          "details": [
+            "Each table in the database is mapped to a data structure in the language",
+            "Each database query is mapped to a function that operates on the table's mapped data structure.",
+            "Each relationship between tables is mapped to a function that operates on the tables' mapped data structures."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:Monoid",
+      "@type": "Pattern",
+      "rdfs:label": "Monoid",
+      "description": "Each monoid consists of a pair (M,*) where M is a set of elements and * is an operation/function. Monoids are used to reduce the amount of unique, un-reused code in an application or library and aid in producing concurrent applications.",
+      "rules": [
+        {
+          "rule": "a",
+          "description": "The operation/function, *, must be a binary operation/function. In other words it must have two parameters."
+        },
+        {
+          "rule": "b",
+          "description": "For all a,b in M, a*b is also in M. In other words, the set M is closed under the operation/function *."
+        },
+        {
+          "rule": "c",
+          "description": "For all a,b,c in M, (a*b)*c = a*(b*c). The operation * is associative."
+        },
+        {
+          "rule": "d",
+          "description": "There exists an element e in M such that for all a in M, e*a=a*e=a. There is an identity element in M."
+        }
+      ],
+      "realLifeExamples": [
+        {
+          "description": "The pair (Z,+) is a monoid. The set of all integers, positive, negative, and zero, is closed under the addition operation/function and meets all the other requirements for being a monoid."
+        },
+        {
+          "description": "Set operations are used whenever you are working with significant amounts of data. Each of these set operations is a monoid since a_type is the same for each function. In these examples, a_type and b_type may or may not be the same type.",
+          "examples": [
+            {
+              "name": "Union",
+              "pair": "({Any},union)",
+              "pseudocode": {
+                "specification": "-spec union :: {a_type} {a_type} → {a_type}.",
+                "code": "union :: set_a_type1 set_b_type_1 →\n\t\t\t\t  set_a_type1 ∪ set_b_type1."
+              }
+            },
+            {
+              "name": "Intersection",
+              "pair": "({Any},intersection)",
+              "pseudocode": {
+                "specification": "-spec intersection :: {b_type} {b_type} → {b_type}.",
+                "code": "intersection :: set_b_type1 set_b_type_1 →\n\t\t\t\t  set_b_type1 ∩ set_b_type1."
+              }
+            },
+            {
+              "name": "Difference",
+              "pair": "({Any},difference)",
+              "pseudocode": {
+                "specification": "-spec difference :: {a_type} {a_type} → {a_type}.",
+                "code": "difference :: set_a_type1 set_b_type_1 →\n\t\t\t\t  set_a_type1 \\ set_b_type1."
+              }
+            },
+            {
+              "name": "Symmetric Difference",
+              "pair": "({Any},symmetric_difference)",
+              "pseudocode": {
+                "specification": "-spec symmetric_difference :: {b_type} {b_type} → {b_type}.",
+                "code": "symmetric_difference :: set_b_type1 set_b_type_1 →\n\t\t\t\t  set_b_type1 Δ set_b_type1."
+              }
+            },
+            {
+              "name": "Cartesian Product",
+              "pair": "({Any},cartesian_product)",
+              "pseudocode": {
+                "specification": "-spec cartesian_product :: {a_type} {a_type} → {a_type}.",
+                "code": "cartesian_product :: set_a_type1 set_b_type_1 →\n\t\t\t\t  set_a_type1 X set_a_type1."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:Monad",
+      "@type": "Pattern",
+      "rdfs:label": "Monad",
+      "description": "Monads are all about meta-data. Meta-data is data about data. For example, this list [a,b,c] has a length of 3. The lenght of a list is meta data. The elements in the list are the data.",
+      "rules": [
+        {
+          "rule": "a",
+          "description": "There is a bind function that must have as parameters a monadal type Ma and a function that has parameters of type a and a value of monadal type Mb. The monadal wrapper contains the meta-data about the data, a or b.",
+          "pseudocode": {
+            "specification": "-spec bind :: Ma (λ :: f a → Mb) → Mb",
+            "note": "the type of b need not be, but can be, the same type as a."
+          }
+        },
+        {
+          "rule": "b",
+          "description": "There must be a bind function that is part of the monad.",
+          "mathematicalDescription": "let F be a set of functions. Then ∃ bind ∈ F"
+        },
+        {
+          "rule": "c",
+          "description": "The bind function must be associative.",
+          "mathematicalDescription": "let ⋙ be equivalent to bind. (f ⋙ g) ⋙ h ≡ f ⋙ (g ⋙ h)"
+        },
+        {
+          "rule": "d",
+          "description": "There is a unit function that doesn't change a raw value. It just wraps it to make it a monadal type.",
+          "mathematicalDescription": "∃ function unit :: a → Ma"
+        }
+      ],
+      "realLifeExamples": [
+        {
+          "description": "the Maybe monad: Chaining operations when there may be non-existant data. Non-existant data can happen any time functions are chained together. The maybe monad allows application flow to continue, even when there is no data to work on, something like the data being nil. This gets rid of all kinds of branching code that would otherwise need to be written to handle bad data.",
+          "pseudocode": [
+            {
+              "specification": "-spec maybe_bind :: Ma λ → Mb.",
+              "note": "the λ function has a parameter that matches the type of the data portion of Ma.",
+              "code": [
+                "maybe_bind :: {fail,data} λ → {fail,data};",
+                "maybe_bind :: {_,data} λ → # the _ character means the indicator for success can be any kind of meta-data\n\t\t\t\t\tλ data."
+              ]
+            },
+            {
+              "specification": "-spec maybe_unit :: a → Ma.",
+              "code": "maybe_unit :: data → {ok,data}."
+            },
+            {
+              "specification": "-spec monad_chain :: Ma bind [λ] → Mb.",
+              "code": [
+                "monad_chain :: Ma bind [] → Ma.",
+                "monad_chain :: Ma bind [λ|remaining_lambdas] →\n\t\t\t\t\tmonad_chain (maybe_bind Ma λ) maybe_bind remaining_lambdas. # recursive call with the result of calling maybe_bind, maybe_bind, and the rest of the lambdas to apply."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:BeautifulCode",
+      "@type": "Pattern",
+      "rdfs:label": "Beautiful Code",
+      "definition": "Beautiful code is",
+      "characteristics": [
+        {
+          "name": "Distilled",
+          "description": "There is nothing extraneous or verbose."
+        },
+        {
+          "name": "Balanced",
+          "description": "Calculations are distributed between deeply thought out and clearly articulated calculation units."
+        },
+        {
+          "name": "Harmonious",
+          "description": "The calculation units unite in the reader's mind without cognitive conflict to describe how to accomplish the overall task."
+        },
+        {
+          "name": "Audacious and Original",
+          "description": "Beautiful code surprises the reader by showing new ways to think about a problem."
+        },
+        {
+          "name": "Full of Imagery",
+          "description": "Words and names are selected to clearly, and with impact, inform the reader what they represent."
+        },
+        {
+          "name": "Structured",
+          "description": "The location of the code and its design is as important as what the code says."
+        },
+        {
+          "name": "Compassionate",
+          "description": "The code ensures that reading and understanding the code is an enjoyable and simple process. The code guides the reader through its logic with as little friction and frustration as possible."
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Chaining",
+      "@type": "Pattern",
+      "rdfs:label": "Chaining",
+      "description": "Chaining allows the results of each lambda function in the list to be applied in the order they are occur in the list without having to write function calls embedded in other function calls such as f(g(x)). Chaining these functions leads to more beautiful code when used appropriately.",
+      "pseudocode": {
+        "specification": "-spec chain :: a_type [λ] → b_type",
+        "note": "data of a_type and the result of b_type may or may not be the same actual type",
+        "code": [
+          "chain :: data [] → data;",
+          "chain :: data [func|t] → chain t (func data)."
+        ]
+      },
+      "realLifeExamples": [
+        {
+          "description": "applying map, then filter, and then reducde to a list, or other data structure.",
+          "pseudocode": [
+            {
+              "description": "chained",
+              "code": "chain [map,filter,reduce] data"
+            },
+            {
+              "description": "unchained",
+              "code": "reduce (filter (map data))"
+            }
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Currying",
+      "@type": "Pattern",
+      "rdfs:label": "Currying",
+      "description": "Chaining allows the results of each lambda function in the list to be applied in the order they are occur in the list without having to write function calls embedded in other function calls such as f(g(x)). Chaining these functions leads to more beautiful code when used appropriately. Currying is an example of lazy computation.",
+      "pseudocode": [
+        {
+          "specification": "-spec curry :: some_λ integer → (other_λ :: any_a_type → any_b_type).",
+          "note": "any_a_type and any_b_type may or may not be the same actual type. The curry function is a façade function.",
+          "code": [
+            "curry :: function function_arity → # function_arity is the count of how many parameters 'function' has",
+            "    \t\t\t  curry_helper function function_arity []. # the empty list is the accumulator to which parameters are gradually added."
+          ]
+        },
+        {
+          "specification": "-spec curry_helper :: some_λ integer [any_a_type] → (other_λ :: any → λ) | any_b_type",
+          "note": "any_a_type and any_b_type may or may not be the same actual type. The curry_helper function is the worker function that does the actual computation.",
+          "code": [
+            "curry_helper :: function 0 args → # this is the end of the recursion for curry_helper. When all the arguments have been accumulated, execute the original function using the accumulated arguments instead of returning a lambda to accumulate another argument.",
+            "\t\t\t\t function_args = reverse args # use your language's BIF that reverses a list",
+            "\t\t\t\t apply function function_args; # use your language's BIF that sends a list of arguments to a function",
+            "curry_helper :: function n args → # n is the number of arguments that have not yet been accumulated.",
+            "\t\t\t\t lambda :: an_argument → # this is the lambda function that is returned so it can accumulate all needed parameters",
+            "\t\t\t\t \tcurry_helper function n-1 [an_argument] ⧺ args."
+          ]
+        }
+      ],
+      "realLifeExamples": [
+        {
+          "description": "applying map, then filter, and then reducde to a list, or other data structure.",
+          "pseudocode": [
+            {
+              "description": "chained",
+              "code": "chain [{map,λ1},{filter,λ2},{reduce,λ3}] data"
+            },
+            {
+              "description": "unchained",
+              "code": "reduce λ3 (filter λ2 (map λ1 data))"
+            }
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:LazyComputation",
+      "@type": "Pattern",
+      "rdfs:label": "Lazy Computation",
+      "description": "Streams are an excelent way of accomplishing lazy computation. If you need some infinite set of predictable data, this can be done using streams. Processes are a good way to implement streams.",
+      "pseudocode": [
+        {
+          "description": "A generic stream description",
+          "specification": "-spec stream :: state λ → ok.",
+          "note": "given some starting state, an infinitely recursive process will lazily generate the next value to send to the requester using the λ function.",
+          "code": [
+            "stream :: state → # a façade function that deals with an error condition that could yeild negative results.",
+            "\t\t      {requester,request} <- await # decompose the request tuple so it can be acted on",
+            "\t\t  case of request # case statement where activity depends on what request was made",
+            "\t\t   \tterminate → ok; # if the request was to kill the stream, return ok and end",
+            "\t\t   \totherwise → # if the request was anything other than terminate, act on the general case",
+            "\t\t   \t\tnext_state = (λ state) # do the calculation to determine what to send back to the requesting process",
+            "\t\t   \t\trequester <- next_state # send the result back to the requesting process",
+            "\t\t   \t\tstream next_state λ. # recursively call stream passing the updated state that will be used in the next"
+          ]
+        },
+        {
+          "description": "A Stream that lazily generates an infinite set of even positive integers.",
+          "specification": "-spec pos_evens :: integer → ok.",
+          "note": "given a starting integer, an infinitely recursive process will generate the next even number and send it the the process requesting the next number in the infinite stream.",
+          "code": [
+            "pos_evens :: seed when seed < 0 → # a façade function that deals with an error condition that could yeild negative results.",
+            "\t\t      pos_evens 2; # default to 2",
+            "pos_evens :: seed when 1 = seed (mod 2) → # a façade function that deals with positive odd starting points.",
+            "\t\t\t  pos_evens seed -1; # reduce by one so the next even positive number is one more than the starting point",
+            "pos_evens :: even → # the worker function that recursively waits for an even, positive number request from a some other process",
+            "\t\t\t  requester = await # waiting for a request. Triggers when the requester process asks for a result",
+            "\t\t\t    next_even = even + 2 # lazily generate the number to send to the requester",
+            "\t\t\t    requester <- next_even # send the result of the addition to the requester",
+            "\t\t\t    pos_evens next_even. # recursively call pos_evens with the updated state being the lazily generated number."
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Memoization",
+      "@type": "Pattern",
+      "rdfs:label": "Memoization",
+      "description": "used to retain the results of expensive computation so it doesn't have to be repeated. Generically, this can be described using a stateful process. Individual languages may have more efficient ways of accomplishing memoization. This pattern is shown for learning the principle of memoization.",
+      "pseudocode": {
+        "specification": "memoize_server :: [{function,args} ↫ any_type] → ok.",
+        "note": "a recursive, stateful function where the state is the memo cache",
+        "code": [
+          "memoize_server :: memo_cache →",
+          "\t\t\t\t{requester,function,arguments} <- await # decompose the request tuple so it can be acted on",
+          "\t\t\t\tstored_result = {function,arguments} ↠ memo_cache # get the stored result, if any, from the cache using the function and arguments as the key",
+          "\t\t\t\tcase of stored_result",
+          "\t\t\t\t\tnot_found → # if there is no result found in the memo cache",
+          "\t\t\t\t\t\tresult = (apply function args) # do the calculation using the function and arguments",
+          " \t\t\t\t\t\trequester <- result # send the result of the calculation to the requesting process",
+          " \t\t\t\t\t\tupdated_cache = memo_cache ↞ {{function,arguments},result} # store the result of the calculation using a key consisting of the function and the arguments it is sent",
+          " \t\t\t\t\t\tmemoize_server updated_cache; # recursive call using the updated memo cache",
+          " \t\t\t\t\totherwise →",
+          " \t\t\t\t\t\trequester <- stored_result # send the requesting process the result that was previously stored in the memo cache",
+          " \t\t\t\t\t\tmemoize_server memo_cache. # recursive call using the existing memo cache"
+        ]
+      },
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Composition",
+      "@type": "Pattern",
+      "rdfs:label": "Composition",
+      "description": "combines functions who's parameters and values align in a predictable way so that the result is a single function. Composition is used when the composed function is stored and reused multiple times.",
+      "pseudocode": {
+        "specification": "-spec compose :: [function] → λ.",
+        "note": "a façade that combines all the functions in the list in such a way that the resulting function executes each of them in the reverse of the order listed.",
+        "code": [
+          "compose :: functions →",
+          "\t\t\t  fold_left :: (c_λ :: a_func composed_accum → a_λ :: args → composed_accum (a_func args)) functions # used fold left, a folding-lambda, c_λ, and a list of functions to compose to generate a single lambda that is the composed functions."
+        ]
+      },
+      "rules": "None"
+    },
+    {
+      "@id": "ex:State",
+      "@type": "Pattern",
+      "rdfs:label": "State",
+      "description": "allows behavioral changes depending on internal state changes. This is one of the basic principles of chaining. Modifying meta-data of an item following the monad pattern and having that item exhibit different behavior is another example of application of this pattern. Functional programming also has this basic principle; the state of the application is the state of the currently executing function. Different data passed to a function that is designed to have different behavior depending on the data passed, including but not being limited to lambdas in the data, also follows this pattern.",
+      "pseudocode": [
+        {
+          "specification": "-spec evolve :: [any_type ↫ any_type] → ok.",
+          "note": "a recursive, stateful function where the state is a dictionary. The behavior of this function changes based on modifications made in the past and the other elements of the state dictionary.",
+          "code": [
+            "evolve :: state →",
+            "\t\t\t\treceive",
+            "\t\t\t\t\t{evolution_indicator} → # if an evolution indicator is received, modify the state",
+            "\t\t\t\t\t\tevolve (adjust evolution_indicator state); # recursively call evolve sending an adjusted state",
+            "\t\t\t\t\t{data_indicator, requester} → # if a data request is made",
+            "\t\t\t\t\t\tresponse = data_indicator ↠ state # get the specified data",
+            "\t\t\t\t\t\trequester <- response; # send the specified data to the requesting process",
+            "\t\t\t\t\tstop_indicator → ok. # if a stop request is made, do not recurse"
+          ]
+        },
+        {
+          "specification": "-spec adjust :: any_type [any_type ↫ any_type] → [any_type ↫ any_type].",
+          "note": "modify the data based on what is found in the data using an indicator key",
+          "code": [
+            "adjust :: indicator data →",
+            "\t adjustment = indicator ↠ data # get the adjustment to be done from the data dictionary",
+            "\t (adjustment data). # adjust the data and return it"
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Factory",
+      "@type": "Pattern",
+      "rdfs:label": "Factory",
+      "description": "A basic functional programming principle is that values/variables are immutable. Thus every function is a factory that creates a new value of some fixed type. The function decides what the type of the returned value is depending on what portions of the function are executed by a specific execution of the function.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:AbstractFactory",
+      "@type": "Pattern",
+      "rdfs:label": "Abstract Factory",
+      "description": "a factory factory. That is to say a factory that creates factories. A basic functional programming principle is that functions are data. Therefore, functions can be written to generate other functions and return these generated functions. Functions that return two or more different factory-type functions depending on the request made are following the Abstract Factory pattern.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Builder",
+      "@type": "Pattern",
+      "rdfs:label": "Builder",
+      "description": "A fundamental principle of functional programming is that data is only manipulated by functions and operators. Therefore the creation of a complex data representation is always separate and distinct from the data representation itself. Thus functional programming code always follows the builder pattern.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Prototype",
+      "@type": "Pattern",
+      "rdfs:label": "Prototype",
+      "description": "A fundamental principle of functional programming is that values are imutable. Therefore, any simple or complex data representation can serve as the basis of other representations that include the initial representation. Therefore, any encapsulating any existing data representation in another is following the prototype pattern.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Singleton",
+      "@type": "Pattern",
+      "rdfs:label": "Singleton",
+      "description": "It is a matter of contention for all types of programming except functional programming and design. Whether singleton is a pattern or anti-pattern is a huge question in these non-functional programming communities. A fundamental principle of funtional design and functional programming is that there are no side effects. A singleton is a side effect. Therefore these is no contention about singleton in functional programming. It is an anti-pattern.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Adapter",
+      "@type": "Pattern",
+      "rdfs:label": "Adapter",
+      "description": "An adapter wraps a function in another function so that the wrapper meets the needs of pre-existing or other code that needs a specific function and parameter set follows the Adapter pattern.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Decorator",
+      "@type": "Pattern",
+      "rdfs:label": "Decorator",
+      "description": "a decorator adds behavior to existing collections of behavior, providing new instances of different types of the original behavior collection. A fundamental principle of functional programming is that functions and lambdas are data. Therefore any function or lambda can be stored in a collection. Any function that adds a function or lambda to to a collection is a decorator.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Facade",
+      "@type": "Pattern",
+      "rdfs:label": "Façade",
+      "description": "Any function that provides a simplified interface to one or more other, more complicated function interfaces is a façade.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Proxy",
+      "@type": "Pattern",
+      "rdfs:label": "Proxy",
+      "description": "any surrogate or place holder that controls access to a stateful or stateless function. In functional programming, modules tend to be a very important code organization principle. Modules consist of a set of functions, usually but not requried to be, related in some describable way. It is common for modules to contain functions that can only be used by other functions that are also in the same module. Modules can also contain functions that can be used in other functions found in other modules. Let there be two functions in module_a. Let func1 be in module_a and be usable by functions in module_b. Let func2 be in module_a but not usable by functions in any module that is not module_a. Then func1 is applying the proxy pattern.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Flyweight",
+      "@type": "Pattern",
+      "rdfs:label": "Flyweight",
+      "description": "the purpose of this pattern is to reduce redundancy through data sharing. Functional lists are an example of the flyweight pattern. In them, when an item is added to the list to create a new list, the original list is 'embedded' in the new list. This means the new list contains no duplication. Also, the original list still exists. Therefore, the data in the two lists is shared. This data sharing also holds for removing the first element of a list. Thus the new list shares all but the first element of the original list without any duplication.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:ChainOfResponsibility",
+      "@type": "Pattern",
+      "rdfs:label": "Chain of Responsibility",
+      "description": "when implemented, passes data along a chain of functions until the data is acted on by one of the chain links. Some information is then returned by the handling function back through the previous links in the chain to the originator of the request. The functions in the chain after the function that acts on the data are not called.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Command",
+      "@type": "Pattern",
+      "rdfs:label": "Command",
+      "description": "encapsulate a request as data then send it to the client.",
+      "pseudocode": {
+        "description": "{request_indicator,data} # a tuple consisting of an indicator of what the client should do with the data."
+      },
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Strategy",
+      "@type": "Pattern",
+      "rdfs:label": "Strategy",
+      "description": "use an interchangeable set of sub-algorithms implemented as funtions or lambdas to that the encapsulating algorithm's function can use them without knowing directly which of the sub-algorithms is being used. This can be accomplished by storing lambdas in a dictionary that is the state of a stateful function. The stateful function then waits for a command and data pair, command pattern, uses the command to retrieve the appropriate lambda stored in the state, and then passes the data to the retrieved lambda.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Iterator",
+      "@type": "Pattern",
+      "rdfs:label": "Iterator",
+      "description": "a way to access data sequentially without knowing the type of the collection the data is in. Example collection types could be list, heap, and bindary tree. A function that returns the next element in the collection and a new collection with the element removed that has seperate clauses for each type of collection would be an example of the iterator pattern.",
+      "pseudocode": [
+        {
+          "specification": "-spec iterator :: collection → any collection.",
+          "code": [
+            "iterator :: [] → nil [].",
+            "iterator :: {} → nil {}.",
+            "iterator :: [head | tail] → head tail.",
+            "iterator :: {value, left_subtree, right_subtree} → next_value updated_tree."
+          ]
+        },
+        {
+          "specification": "-spec in_order_traversal :: {tree_value, left_subtree, right_subtree} → [any].",
+          "note": "Helper function for binary trees",
+          "code": [
+            "in_order_traversal :: {value, left, right} →",
+            "    left_traversal = in_order_traversal left,",
+            "    right_traversal = in_order_traversal right,",
+            "    concat left_traversal [value] right_traversal.",
+            "in_order_traversal :: none → []."
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:TemplateMethod",
+      "@type": "Pattern",
+      "rdfs:label": "Template Method",
+      "description": "A template defines the skeleton of an algorithm yet allows some steps to be implemented later without altering the overall algorithm's structure. This is typically achieved through inheritance and polymorphism.  the strategy and monad patterns are combined to implement this pattern.",
+      "dependencies": ["monad pattern", "strategy pattern"],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Observer",
+      "@type": "Pattern",
+      "rdfs:label": "Observer",
+      "description": "a defined one-to-many relationship between stateful functions such that when the one state is updated, all of the many stateful functions are notified and update their states. In the observer pattern, all the many stateful functions are statically defined. An example could be an event handler function that has as its many other functions one to log an event, one to sms an event, and one to trigger a state change in a piece of software to slow down acceptance of connections from external systems.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Visitor",
+      "@type": "Pattern",
+      "rdfs:label": "Visitor",
+      "description": "In all language types, the purpose of the visitor pattern is to decouple behavior from data. Visitor pattern ensures that functions and the data they operate on remain distinct, maintaining immutability and clean separation of concerns. This separation is a fundamental principle of functional programming. Functions applying this pattern use the data they recieve as parameters. They can not modify the data recieved, but they can create new data encapsulating all, some, or none of the original data as well as add information to a this new data.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Bridge",
+      "@type": "Pattern",
+      "rdfs:label": "Bridge",
+      "description": "In all language types, the purpose of the bridge pattern is to separate the way you use something from how it actually works inside. This makes it possible to change or improve the inner workings without affecting how you interact with it, making the software easier to update and manage. This encapsulation is a fundamental principle of functional programming since functions shouldn't have side effects.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Interpreter",
+      "@type": "Pattern",
+      "rdfs:label": "Interpreter",
+      "description": "In all language types, the purpose of the interpreter pattern is to allow the creation of a small, simplified, structured, string-based language that is interpreted as computer instructions. The first step of this pattern is to tokenize the text. These tokens are then used to build an abstract syntax tree. The tree is then evaluated to execute the desired behavior.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:QueryResponsibilitySegregation",
+      "@type": "Pattern",
+      "rdfs:label": "query responsibility segregation",
+      "description": "an architectural pattern that separates the responsibilities of reading and writing data by using structured data and different functions for data retrieval and insertion within an application or library. This separation allows each function to be optimized for its specific purpose, enhancing scalability, performance, and maintainability.",
+      "pseudocode": [
+        {
+          "specification": "-spec handle_command :: {command_atom, data} → result.",
+          "note": "Handle a command based on the tuple {action, data}",
+          "code": [
+            "handle_command {command_atom, data} →",
+            "    case command_atom of",
+            "        create →",
+            "            result = insert_into_database data",
+            "        update →",
+            "            result = update_database data",
+            "        delete →",
+            "            result = delete_from_database data",
+            "    return result."
+          ]
+        },
+        {
+          "specification": "-spec insert_into_database :: data → success_or_failure.",
+          "note": "Example function for database interaction (insert)",
+          "code": [
+            "insert_into_database data →",
+            "    # Logic to insert data into the database",
+            "    success = database_insert data",
+            "    return success."
+          ]
+        },
+        {
+          "specification": "-spec update_database :: data → success_or_failure.",
+          "note": "Example function for database interaction (update)",
+          "code": [
+            "update_database data →",
+            "    # Logic to update existing data in the database",
+            "    success = database_update data",
+            "    return success."
+          ]
+        },
+        {
+          "specification": "-spec delete_from_database :: data → success_or_failure.",
+          "note": "Example function for database interaction (delete)",
+          "code": [
+            "delete_from_database data →",
+            "    # Logic to delete data from the database",
+            "    success = database_delete data",
+            "    return success."
+          ]
+        },
+        {
+          "specification": "-spec handle_query :: query → result.",
+          "note": "Handle a query (e.g., fetch data based on some criteria)",
+          "code": [
+            "handle_query query_data →",
+            "    result = fetch_from_database query_data",
+            "    return result."
+          ]
+        },
+        {
+          "specification": "-spec fetch_from_database :: query → data_result.",
+          "note": "Example function for fetching data from the database",
+          "code": [
+            "fetch_from_database query →",
+            "    # Logic to retrieve data from the database",
+            "    result = database_select query",
+            "    return result."
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:EventSourcing",
+      "@type": "Pattern",
+      "rdfs:label": "event sourcing",
+      "description": "an architectural pattern intended to record all changes to an application's state as a sequence of immutable events, rather than storing only the current state; building a temporal database of all application state changes. This approach enables full auditability, allows reconstruction of past states by replaying events, and supports features like event replay and temporal queries.",
+      "pseudocode": [
+        {
+          "specification": "-spec store_state_change :: atom term term term {term ↫ [{term,term}]} → {term ↫ [{atom,term,term,time}]}.",
+          "note": "storing data that causes a change of state for the application to the list of previous changes using a map where the key is a unique ID and the value is a list of changes. Message queues, databases, files, etc may also be used to store the list of states.",
+          "code": [
+            "store_change :: event_type data updated_state id stored_events →",
+            "\t event_list = id ↠ stored_events # get the currently stored events from the stored_events map",
+            "\t updated_list = [{event_type,data,updated_state,(current_time)}] ⧺ event_list # build a new event and prepend it to the event_list",
+            "\t stored_events ↞ id updated_list. # put the new list into the stored_events map using id as the key"
+          ]
+        },
+        {
+          "specification": "-spec get_all_events :: term {term ↫ [{atom,term,term,time}]} → [{atom,term,time}]",
+          "note": "retrieve all events for a specified id",
+          "code": [
+            "get_all_events :: id stored_events →",
+            "\t id ↠ stored_events. # get the list from the stored events map"
+          ]
+        },
+        {
+          "specification": "-spec replay_events_since :: time any [term ↫ [{atom,term,term,time}] [term ↫ λ] → any.",
+          "note": "given a starting state, use the stored data for each event to rebuild the final state step-by-step.",
+          "code": [
+            "replay_events_since :: start_time initial_state stored_events event_functions →",
+            "\t events_after_time = [{event_type,data,updated_state,change_time} | {event_type,data,updated_state,change_time} <- stored_events, change_time >= start_time] # filter the list of changes to be only those after a specified time.",
+            "\t events_ready = reverse events_after_time # reverse the list so the events happen in chronological order",
+            "\t foldl (lambda :: {event_type,data,updated_state,change_time} data accum_state → (event_type ↠ event_functions) accum_state data) events_ready initial_state. # accumulate the state changes for each event using each function mapped to the event type. The initial value of the accumulator is the initial_state parameter."
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:PortsAndAdapters",
+      "@type": "Pattern",
+      "rdfs:label": "ports and adapters",
+      "description": "an architectural pattern also known as hexagonal architecture. It is intended to decouple an application's core business logic from external systems like user interfaces, databases, and external services by introducing abstract interfaces called \"ports\" and concrete implementations called \"adapters.\" In functional design, a port is a function signature that a series of lambda functions, adapters, must follow. This separation enhances testability, maintainability, and flexibility by allowing the core application to function independently of its external dependencies. This pattern puts the business logic portion of the system in the center of thought. All other components are subservient to the business logic portion of the application.",
+      "pseudocode": [
+        {
+          "specification": "-spec handle_request :: {term, term} [term ↫ λ] → term.",
+          "code": [
+            "handle_request {port, request_data} adapter_map →",
+            "    adapter = port ↠ adapter_map # Find the adapter corresponding to the port",
+            "    adapter request_data. # Call the adapter with the request data"
+          ]
+        },
+        {
+          "specification": "-spec register_adapter :: port adapter {term ↫ λ} → {term ↫ λ}.",
+          "code": [
+            "register_adapter :: port adapter adapter_map →",
+            "    adapter_map ↞ port, adapter. # Register the adapter for the given port"
+          ]
+        },
+        {
+          "specification": "-spec external_service_adapter :: term → term.",
+          "note": "an example of an adapter",
+          "code": [
+            "external_service_adapter request_data →",
+            "    # Logic to handle the request by interacting with some external service",
+            "    call_external_service request_data. # this function could be one or more calls to the API for some external service"
+          ]
+        },
+        {
+          "specification": "-spec database_adapter :: term → term.",
+          "code": [
+            "database_adapter request_data →",
+            "    # Logic to handle the request by interacting with the database",
+            "    query_database request_data. # this is an example where the database API would be used"
+          ]
+        },
+        {
+          "specification": "-spec user_interface_adapter :: term → term.",
+          "code": [
+            "user_interface_adapter request_data →",
+            "    # Logic to handle the request from the user interface",
+            "    handle_ui_request request_data. # an example where the API for changing the user interface would be used"
+          ]
+        }
+      ],
+      "rules": "None"
+    },
+    {
+      "@id": "ex:ClientServer",
+      "@type": "Pattern",
+      "rdfs:label": "client server",
+      "description": "An architectural pattern that divides the system into clients that request services and servers that provide services, facilitating centralized resource management. This model supports multiple clients interacting with a server, enabling resource sharing and collaboration. In functional programming, this architectural pattern can be applied at both the micro-level, processes, and the macro-level, system components.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:EventDrivenArchitecture",
+      "@type": "Pattern",
+      "rdfs:label": "Event-Driven Architecture",
+      "description": "An architectural pattern that centers around the production, detection, and reaction to events, enabling asynchronous communication between components. This decouples producers and consumers, allowing for real-time processing and scalable, responsive systems. In functional programming, the components may be processes, at a micro-level, or portions of an entire system, macro-level.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:MV CArchitecture",
+      "@type": "Pattern",
+      "rdfs:label": "Model-View-Controller (MVC) Architecture",
+      "description": "An architectural pattern that splits the application into three interconnected components: the model (data), the view (user interface), and the controller (business logic). This separation allows for modular development and easier maintenance by enabling independent updates to each component. In functional programming, the components may be processes, at a micro-level, or portions of an entire system, macro-level.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:PipeAndFilterArchitecture",
+      "@type": "Pattern",
+      "rdfs:label": "Pipe-and-Filter Architecture",
+      "description": "An architectural pattern that processes data through a sequence of components (filters), each transforming the data, connected by pipelines. This promotes reusability and flexibility by allowing filters to be combined in various configurations to achieve different functionalities. This is a slight variation of the chaining and Monad patterns. In functional programming, the components (filters) may be processes, at a micro-level, or portions of an entire system, macro-level.",
+      "rules": "None"
+    },
+    {
+      "@id": "ex:Actor",
+      "@type": "Pattern",
+      "rdfs:label": "Actor",
+      "description": "An architectural pattern that simplifies the development of concurrent and distributed systems by encapsulating state and behavior within independent actors that communicate exclusively through asynchronous message passing. This approach eliminates shared mutable state and synchronization complexities, enhancing scalability, fault tolerance, and modularity in software applications. In functional programming, the actors may be processes, at a micro-level, or portions of an entire system, macro-level (micro-services).",
+      "rules": "None"
+    }
+  ]
+}
+

@@ -1,0 +1,448 @@
+{
+  "@context": {
+    "@vocab": "https://aalang.org/spec/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "ex": "https://aalang.dev/example/"
+  },
+  "schema:license": "LICENSE",
+  "schema:copyrightHolder": {
+    "@type": "schema:Person",
+    "schema:name": "Lee S. Barney"
+  },
+  "schema:copyrightYear": "2025",
+  "@graph": [
+    {
+      "@id": "ex:PseudocodePrimer",
+      "@type": "Document",
+      "rdfs:label": "Pseudocode Primer",
+      "schema:source": "https://byui-cse.github.io/cse382-course/pseudocode_primer.html",
+      "description": "A primer on pseudocode notation used for describing algorithms in a language-agnostic way",
+      "sections": [
+        {"@id": "ex:ValueTypes"},
+        {"@id": "ex:Operators"},
+        {"@id": "ex:Lists"},
+        {"@id": "ex:DataStructures"},
+        {"@id": "ex:FunctionDeclarations"},
+        {"@id": "ex:Keywords"},
+        {"@id": "ex:UsageExamples"},
+        {"@id": "ex:ListComprehensions"}
+      ]
+    },
+    {
+      "@id": "ex:ValueTypes",
+      "@type": "Concept",
+      "rdfs:label": "Value Types",
+      "types": [
+        {
+          "@id": "ex:Integer",
+          "name": "Integer",
+          "description": "Integer value type"
+        },
+        {
+          "@id": "ex:Real",
+          "name": "Real",
+          "description": "Real number value type"
+        },
+        {
+          "@id": "ex:Character",
+          "name": "Character",
+          "description": "Character value type"
+        },
+        {
+          "@id": "ex:Boolean",
+          "name": "Boolean",
+          "description": "Boolean value type"
+        },
+        {
+          "@id": "ex:Accumulator",
+          "name": "acc",
+          "description": "An accumulator of any type, including a list"
+        },
+        {
+          "@id": "ex:Tuple",
+          "name": "{a,b}",
+          "description": "A 2-tuple",
+          "notation": "{a,b}"
+        }
+      ]
+    },
+    {
+      "@id": "ex:Operators",
+      "@type": "Concept",
+      "rdfs:label": "Operators",
+      "operators": [
+        {
+          "@id": "ex:GenericOperator",
+          "notation": "⨁",
+          "description": "A symbol representing an operator to be specified elsewhere",
+          "readAs": "generic operator"
+        },
+        {
+          "@id": "ex:Ceiling",
+          "notation": "⌈⌉",
+          "description": "An operator representing the ceiling behavior",
+          "readAs": "ceiling"
+        },
+        {
+          "@id": "ex:Floor",
+          "notation": "⌊⌋",
+          "description": "An operator representing the floor behavior",
+          "readAs": "floor"
+        },
+        {
+          "@id": "ex:AbsoluteValue",
+          "notation": "|x|",
+          "description": "An operator representing the absolute value of x",
+          "readAs": "absolute value"
+        },
+        {
+          "@id": "ex:ArithmeticOperators",
+          "notation": ["+", "-", "·", "÷"],
+          "description": "Addition, subtraction, multiplication, and division as per standard mathematics",
+          "readAs": ["addition", "subtraction", "multiplication", "division"]
+        },
+        {
+          "@id": "ex:ComparisonOperators",
+          "notation": ["<", ">", "=", "<=", ">="],
+          "description": "Comparison operators as usually defined in mathematics",
+          "readAs": ["less than", "greater than", "equal", "less than or equal", "greater than or equal"]
+        },
+        {
+          "@id": "ex:FunctionClauseEnd",
+          "notation": ";",
+          "description": "The end of a function clause",
+          "readAs": "semicolon"
+        },
+        {
+          "@id": "ex:FunctionEnd",
+          "notation": ".",
+          "description": "The end of a function",
+          "readAs": "period"
+        },
+        {
+          "@id": "ex:TypeOf",
+          "notation": ":::",
+          "description": "An operator read as 'of type'",
+          "readAs": "of type"
+        },
+        {
+          "@id": "ex:Composition",
+          "notation": "∘",
+          "description": "An operator representing composition",
+          "readAs": "composition"
+        },
+        {
+          "@id": "ex:TupleDecomposition",
+          "notation": "↬",
+          "description": "An operator representing tuple decomposition",
+          "readAs": "looparrowright"
+        },
+        {
+          "@id": "ex:Binding",
+          "notation": "≫=",
+          "description": "An operator representing binding",
+          "readAs": "binding"
+        },
+        {
+          "@id": "ex:Comment",
+          "notation": "%%",
+          "description": "An operator indicating a single line comment",
+          "readAs": "comment"
+        },
+        {
+          "@id": "ex:Ignore",
+          "notation": "_",
+          "description": "An operator indicating a parameter or element is ignored",
+          "readAs": "underscore"
+        }
+      ]
+    },
+    {
+      "@id": "ex:Lists",
+      "@type": "Concept",
+      "rdfs:label": "Lists",
+      "declaring": {
+        "@id": "ex:ListDeclarations",
+        "patterns": [
+          {
+            "notation": "[]",
+            "description": "An empty list containing elements of any type"
+          },
+          {
+            "notation": "[]:::Type",
+            "description": "An empty list containing elements of the specified type"
+          },
+          {
+            "notation": "[a]",
+            "description": "A list that may or may not be empty containing elements of any type"
+          },
+          {
+            "notation": "[a]:::Type",
+            "description": "A list that may or may not be empty containing elements of the specified type"
+          }
+        ]
+      },
+      "building": {
+        "@id": "ex:ListBuilding",
+        "patterns": [
+          {
+            "@id": "ex:Prepend",
+            "notation": "x ⧺ [a]",
+            "description": "Creates a new list, set, or heap that is the result of prepending x, if a is a list or stack, or adding x if [a] is a set or heap",
+            "operation": "prepend"
+          },
+          {
+            "@id": "ex:Append",
+            "notation": "[a] ⧺ x",
+            "description": "Creates a new list that is the result of appending x to the list [a]",
+            "operation": "append"
+          },
+          {
+            "@id": "ex:AppendLists",
+            "notation": "[a] ⧺ [b]",
+            "description": "Creates a new list by appending lists containing different elements",
+            "operation": "list concatenation"
+          },
+          {
+            "@id": "ex:AppendSameLists",
+            "notation": "[a] ⧺ [a]",
+            "description": "Creates a new list by appending lists containing the same elements",
+            "operation": "list concatenation"
+          }
+        ]
+      },
+      "reducing": {
+        "@id": "ex:ListReduction",
+        "patterns": [
+          {
+            "@id": "ex:HeadTail",
+            "notation": "[h|t]",
+            "description": "Popping the first element of a list, set, queue, min_heap, or max_heap. h is the first element or head of the original data structure and t is the remaining elements. If the data structure is a list or queue, t consists of the elements in the first list without the head in their original order.",
+            "operation": "head/tail decomposition",
+            "readAs": "h head, t tail"
+          },
+          {
+            "@id": "ex:LastFirst",
+            "notation": "[h:t]",
+            "description": "Popping the last element of a list. t is the last element or tail of the original list and h is the first list without the tail with all elements in their original order.",
+            "operation": "last element extraction",
+            "readAs": "h head, t tail"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "ex:DataStructures",
+      "@type": "Concept",
+      "rdfs:label": "Data Structures",
+      "structures": [
+        {
+          "@id": "ex:Set",
+          "name": "Set",
+          "notation": "[n]_set",
+          "description": "A set of elements",
+          "operations": [
+            {
+              "@id": "ex:SetMembership",
+              "notation": "a ↠ set",
+              "description": "Determine if a is or is not an element of set. The value is a Boolean.",
+              "operation": "membership test"
+            },
+            {
+              "@id": "ex:SetAdd",
+              "notation": "set ↞ a",
+              "description": "Creating a new set by adding a to the existing set set",
+              "operation": "add element"
+            },
+            {
+              "@id": "ex:SetRemove",
+              "notation": "set - a",
+              "description": "Creating a new set by removing a from the existing set set",
+              "operation": "remove element"
+            }
+          ]
+        },
+        {
+          "@id": "ex:Queue",
+          "name": "Queue",
+          "notation": "[n]_queue",
+          "description": "A queue of elements"
+        },
+        {
+          "@id": "ex:MinHeap",
+          "name": "Min Heap",
+          "notation": "[n]_min_heap",
+          "description": "A heap of elements sorted with the least element at the root"
+        },
+        {
+          "@id": "ex:MaxHeap",
+          "name": "Max Heap",
+          "notation": "[n]_max_heap",
+          "description": "A heap of elements sorted with the greatest element at the root"
+        },
+        {
+          "@id": "ex:Dictionary",
+          "name": "Dictionary",
+          "notation": "[a ↬ b]",
+          "description": "A dictionary consisting of a single key a and value b",
+          "empty": "[ ↬ ]",
+          "emptyDescription": "An empty dictionary",
+          "operations": [
+            {
+              "@id": "ex:DictAdd",
+              "notation": "dict ↞ a b",
+              "description": "Creating a new dictionary by adding the key-value pair a,b to the existing dictionary dict",
+              "operation": "add key-value pair"
+            },
+            {
+              "@id": "ex:DictLookup",
+              "notation": "a ↠ dict",
+              "description": "Using the key a to get the key's associated value from the dictionary dict",
+              "operation": "lookup value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:FunctionDeclarations",
+      "@type": "Concept",
+      "rdfs:label": "Function Declarations",
+      "pattern": "function_name :: parameters → value",
+      "description": "All function declarations follow the same pattern. They begin with the name of the function. This is separated from the set of parameters by two colons, ::. The parameter set is space separated. This is then followed by a right arrow representing an assertion of truth. The arrow points at the value of the function (in programmer terms, the return value).",
+      "examples": [
+        {
+          "@id": "ex:FunctionNoParams",
+          "notation": "start ::  → Real",
+          "description": "A function named start with no parameters. The value of the function is a Real."
+        },
+        {
+          "@id": "ex:FunctionSingleParam",
+          "notation": "length :: [a] → Integer",
+          "description": "A function named length with a single parameter that is a list that may or may not be empty. The value of the function is an Integer."
+        },
+        {
+          "@id": "ex:FunctionTwoParams",
+          "notation": "comparator :: x y → r",
+          "description": "A function called comparator that has two parameters and has a value of undetermined type."
+        },
+        {
+          "@id": "ex:FunctionTyped",
+          "notation": "in :: x [a] → Boolean",
+          "description": "A function called in that has two parameters, a value and a list that may or may not be empty and has a defined value type. In this case, Boolean."
+        },
+        {
+          "@id": "ex:FunctionWithFunction",
+          "notation": "b_search :: a [b] (f :: x y → Integer) → c",
+          "description": "A function called b_search that has three parameters, a value, a list that may or may not be empty, and a function named f that itself has two parameters and a value of Integer. The b_search function's value is of undeclared type."
+        }
+      ]
+    },
+    {
+      "@id": "ex:Keywords",
+      "@type": "Concept",
+      "rdfs:label": "Keywords",
+      "keywords": [
+        {
+          "@id": "ex:When",
+          "name": "when",
+          "description": "A guard for execution of a code clause consisting of one or more sub-statements"
+        },
+        {
+          "@id": "ex:Otherwise",
+          "name": "otherwise",
+          "description": "Used in conjunction with the when keyword to indicate all other possibilities"
+        },
+        {
+          "@id": "ex:Nil",
+          "name": "nil",
+          "description": "Indicating the lack of existence. Nothing."
+        },
+        {
+          "@id": "ex:Or",
+          "name": "or",
+          "description": "As traditionally defined in logic"
+        },
+        {
+          "@id": "ex:And",
+          "name": "and",
+          "description": "As traditionally defined in logic"
+        },
+        {
+          "@id": "ex:Xor",
+          "name": "xor",
+          "description": "As traditionally defined in logic"
+        },
+        {
+          "@id": "ex:True",
+          "name": "true",
+          "description": "As traditionally defined in logic"
+        },
+        {
+          "@id": "ex:False",
+          "name": "false",
+          "description": "As traditionally defined in logic"
+        }
+      ]
+    },
+    {
+      "@id": "ex:UsageExamples",
+      "@type": "Concept",
+      "rdfs:label": "Usage Examples",
+      "examples": [
+        {
+          "@id": "ex:SpecOnly",
+          "name": "Function specification without a definition",
+          "description": "This function determines the length of a list. Notice that all specifications begin with -spec to differentiate the specification from the function itself. Specifications are used to declare the function's name, parameters, and its value. The types of the parameters are also included.",
+          "notation": "-spec len :: [a] → b:::Integer",
+          "explanation": "In the example, b is of type Integer. The a is left as an undefined type."
+        },
+        {
+          "@id": "ex:FunctionWithClauses",
+          "name": "Function declaration followed by its two clauses",
+          "description": "This function adds all the elements of a list.",
+          "notation": [
+            "-spec sum :: [a] → a:::Real",
+            "sum :: [a] → 0 when [a] is empty;",
+            "sum :: [h|t] → h+sum t otherwise."
+          ]
+        },
+        {
+          "@id": "ex:FunctionUsingPrevious",
+          "name": "Function declaration and definition that uses previously declared functions",
+          "description": "This function calculates the average of a list of numbers.",
+          "notation": [
+            "-spec average :: [a] → a:::Real",
+            "average = sum [a] ÷ len [a]."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:ListComprehensions",
+      "@type": "Concept",
+      "rdfs:label": "List Comprehensions",
+      "examples": [
+        {
+          "@id": "ex:ListComprehensionWithPredicate",
+          "notation": "[x∈[1 2 3…] : x≡0(mod2)]",
+          "description": "Builds a list of even integers from the list of all positive integers",
+          "explanation": "The pseudocode below builds a list of even integers from the list of all positive integers."
+        },
+        {
+          "@id": "ex:ListComprehensionTuples",
+          "notation": "[{x∈[1 2 3 …],y∈[a b c…z]}]",
+          "description": "Produces a list of 2-tuples. No predicate is used.",
+          "explanation": "Here is pseudocode that produces a list of 2-tuples. No predicate is used."
+        },
+        {
+          "@id": "ex:ListComprehensionMultiplePredicates",
+          "description": "Multiple predicates can be applied using the boolean keywords listed above (or, and, xor)"
+        }
+      ]
+    }
+  ]
+}
+

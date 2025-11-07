@@ -1,0 +1,692 @@
+{
+  "@context": {
+    "@vocab": "https://aalang.org/spec/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "ex": "https://aalang.dev/example/"
+  },
+  "schema:license": "LICENSE",
+  "schema:copyrightHolder": {
+    "@type": "schema:Person",
+    "schema:name": "Lee S. Barney"
+  },
+  "schema:copyrightYear": "2025",
+  "@graph": [
+    {
+      "@id": "ex:DataStructuresPseudocode",
+      "@type": "Document",
+      "rdfs:label": "Data Structures Pseudocode",
+      "dataStructures": [
+        {"@id": "ex:Lists"},
+        {"@id": "ex:BinaryTrees"},
+        {"@id": "ex:RedBlackTrees"},
+        {"@id": "ex:LeftistMinHeaps"},
+        {"@id": "ex:Queue"},
+        {"@id": "ex:Deques"},
+        {"@id": "ex:Tries"},
+        {"@id": "ex:RandomAccessLists"}
+      ]
+    },
+    {
+      "@id": "ex:Lists",
+      "@type": "DataStructure",
+      "rdfs:label": "Lists",
+      "nodeStructure": {
+        "format": "{value,next_node}",
+        "example": "{bob,{sue,{joe,nil}}}"
+      },
+      "functions": [
+        {
+          "@id": "ex:Lists_Add",
+          "name": "add",
+          "specification": "-spec add :: Any List → List",
+          "pseudocode": "add :: e current_list → {e,current_list}"
+        },
+        {
+          "@id": "ex:Lists_Pop",
+          "name": "pop",
+          "specification": "-spec pop :: List → List",
+          "pseudocode": [
+            "pop :: nil → nil;",
+            "pop :: {element,sub_list} → sub_list."
+          ]
+        },
+        {
+          "@id": "ex:Lists_First",
+          "name": "first",
+          "specification": "-spec first :: List → Any",
+          "pseudocode": "first :: {e,sub_list} → e"
+        },
+        {
+          "@id": "ex:Lists_Contains",
+          "name": "contains",
+          "specification": "-spec contains :: Any List → Boolean",
+          "pseudocode": [
+            "contains :: p nil → false;",
+            "contains :: p {e,sub_list} when p = e → true;",
+            "contains :: p {_,sub_list} → contains p sub_list."
+          ]
+        },
+        {
+          "@id": "ex:Lists_IsEmpty",
+          "name": "isEmpty",
+          "specification": "isEmpty :: List → Boolean",
+          "pseudocode": [
+            "isEmpty :: nil → true;",
+            "isEmpty :: {_,_} → false."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:BinaryTrees",
+      "@type": "DataStructure",
+      "rdfs:label": "Binary Trees",
+      "nodeStructure": {
+        "format": "{value,next_left,next_right}",
+        "example": "{10,{2,nil,nil},{15,nil,nil}}"
+      },
+      "functions": [
+        {
+          "@id": "ex:BinaryTrees_Add",
+          "name": "add",
+          "specification": "add :: Any BST → BST",
+          "pseudocode": [
+            "add :: e nil → {e,nil,nil};",
+            "add :: e {v,next_left,next_right} when e < v → {v,(add e next_left),next_right};",
+            "add :: e {v,next_left,next_right} → {v,next_left,(add e next_right)}."
+          ]
+        },
+        {
+          "@id": "ex:BinaryTrees_Contains",
+          "name": "contains",
+          "specification": "contains :: Any, BST, (comp Any Any → Integer) → Boolean",
+          "pseudocode": [
+            "contains :: s nil comp → false;",
+            "contains :: s {v,next_left,next_right} comp when (comp s v) = 0 → true;",
+            "contains :: s {v,next_left,next_right} comp when (comp s v) = -1 → contains s next_left comp;",
+            "contains :: s {v,next_left,next_right} comp → contains s next_right comp."
+          ]
+        },
+        {
+          "@id": "ex:BinaryTrees_Remove",
+          "name": "remove",
+          "specification": "remove :: BST Any (comp Any Any → Integer) → BST",
+          "pseudocode": [
+            "remove :: nil e comp → nil;",
+            "remove :: {v,next_left,next_right} e comp when (comp e v) = -1 → {v,(remove next_left e comp),next_right};",
+            "remove :: {v,next_left,next_right} e comp when (comp e v) = 1 → {v,next_left,(remove next_right e comp)};",
+            "remove :: {v,next_left,next_right} e comp when next_left = nil → next_right;",
+            "remove :: {v,next_left,next_right} e comp when next_right = nil → next_left;",
+            "remove :: {v,next_left,next_right} e comp →",
+            "    min_value = find_min next_right",
+            "    {min_value,next_left,(remove next_right min_value comp)}."
+          ]
+        },
+        {
+          "@id": "ex:BinaryTrees_FindMin",
+          "name": "find_min",
+          "specification": "find_min :: BST → Any",
+          "pseudocode": [
+            "find_min :: {v,nil,_} → v;",
+            "find_min :: {_,next_left,_} → find_min next_left."
+          ]
+        },
+        {
+          "@id": "ex:BinaryTrees_IsEmpty",
+          "name": "isEmpty",
+          "specification": "isEmpty :: BST → Boolean",
+          "pseudocode": [
+            "isEmpty :: nil → true;",
+            "isEmpty :: {_,_,_} → false."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:RedBlackTrees",
+      "@type": "DataStructure",
+      "rdfs:label": "Red-Black Trees",
+      "nodeStructure": {
+        "format": "{color,value,next_left,next_right}",
+        "example": "{black,10,{red,2,nil,nil},{red,15,nil,nil}}"
+      },
+      "functions": [
+        {
+          "@id": "ex:RedBlackTrees_Contains",
+          "name": "contains",
+          "specification": "contains :: Any, RBT, (comp Any Any → Integer) → Boolean",
+          "pseudocode": [
+            "contains :: s nil comp → false;",
+            "contains :: s {color,v,next_left,next_right} comp when (comp s v) = 0 → true;",
+            "contains :: s {color,v,next_left,next_right} comp when (comp s v) = -1 → contains s next_left comp;",
+            "contains :: s {color,v,next_left,next_right} comp → contains s next_right comp."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_Add",
+          "name": "add",
+          "specification": "add :: RBT Any (comp Any Any → Integer) → RBT",
+          "pseudocode": [
+            "add :: nil e comparator → {black,e,nil,nil};",
+            "add :: RBT e comparator →",
+            "    {_,next_l,next_r} = rbt_add_helper RBT e comparator",
+            "    {black,next_l,next_r}."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_AddHelper",
+          "name": "rbt_add_helper",
+          "specification": "add_helper :: node Any (comp Any Any → Integer) → root_node",
+          "pseudocode": [
+            "rbt_add_helper :: nil e comparator → {red,e,nil,nil};",
+            "rbt_add_helper :: {color,value,next_l,next_r} e comparator when comparator e value = -1 → balance_l {color,value,(add_helper next_l e comparator),next_r};",
+            "rbt_add_helper :: {color,value,next_l,next_r} e comparator otherwise → balance_r {color,value,next_l,(add_helper next_r e comparator)}."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_BalanceL",
+          "name": "balance_l",
+          "specification": "balance_l :: {color,Any,RBT,RBT} → RBT",
+          "pseudocode": [
+            "balance_l :: {black,value,{red,a_value,{red,b_value,b_left,b_right},a_right},next_r} → {red,a_value,{black,b_value,b_left,b_right},{black,value,a_right,next_r}};",
+            "balance_l :: {black,value,{red,a_value,a_left,{red,b_value,b_left,b_right}},next_r} → {red,b_value,{black,a_value,a_left,b_left},{black,value,b_right,next_r}};",
+            "balance_l :: RBT → RBT."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_BalanceR",
+          "name": "balance_r",
+          "specification": "balance_r :: {color,Any,RBT,RBT} → RBT",
+          "pseudocode": [
+            "balance_r :: {black,value,next_l,{red,a_value,a_left,{red,b_value,b_left,b_right}}} → {red,a_value,{black,value,next_l,a_left},{black,b_value,b_left,b_right}};",
+            "balance_r :: {black,value,next_l,{red,a_value,{red,b_value,b_left,b_right},a_right}} → {red,b_value,{black,value,next_l,b_left},{black,a_value,b_right,a_right}};",
+            "balance_r :: RBT → RBT."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_Remove",
+          "name": "remove",
+          "specification": "remove :: RBT Any (comp Any Any → Integer) → RBT",
+          "pseudocode": [
+            "remove :: nil e comparator → nil;",
+            "remove :: RBT e comparator →",
+            "    {_,next_l,next_r} = rbt_remove_helper RBT e comparator",
+            "    {black,next_l,next_r}."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_RemoveHelper",
+          "name": "rbt_remove_helper",
+          "specification": "remove_helper :: node Any (comp Any Any → Integer) → root_node",
+          "pseudocode": [
+            "rbt_remove_helper :: nil e comparator → nil;",
+            "rbt_remove_helper :: {color,value,next_l,next_r} e comparator when comparator e value = -1 → balance_l {color,value,(rbt_remove_helper next_l e comparator),next_r};",
+            "rbt_remove_helper :: {color,value,next_l,next_r} e comparator when comparator e value = 1 → balance_r {color,value,next_l,(rbt_remove_helper next_r e comparator)};",
+            "rbt_remove_helper :: {color,value,next_l,next_r} e comparator when next_l = nil → next_r;",
+            "rbt_remove_helper :: {color,value,next_l,next_r} e comparator when next_r = nil → next_l;",
+            "rbt_remove_helper :: {color,value,next_l,next_r} e comparator →",
+            "    min_value = rbt_find_min next_r",
+            "    balance_r {color,min_value,next_l,(rbt_remove_helper next_r min_value comparator)}."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_FindMin",
+          "name": "rbt_find_min",
+          "specification": "rbt_find_min :: RBT → Any",
+          "pseudocode": [
+            "rbt_find_min :: {_,v,nil,_} → v;",
+            "rbt_find_min :: {_,_,next_l,_} → rbt_find_min next_l."
+          ]
+        },
+        {
+          "@id": "ex:RedBlackTrees_IsEmpty",
+          "name": "isEmpty",
+          "specification": "isEmpty :: RBT → Boolean",
+          "pseudocode": [
+            "isEmpty :: nil → true;",
+            "isEmpty :: {_,_,_,_} → false."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:LeftistMinHeaps",
+      "@type": "DataStructure",
+      "rdfs:label": "Leftist Min-Heaps",
+      "nodeStructure": {
+        "format": "{rank,value,next_l,next_r}"
+      },
+      "functions": [
+        {
+          "@id": "ex:LeftistMinHeaps_GetMin",
+          "name": "get_min",
+          "specification": "get_min :: heap → e",
+          "pseudocode": [
+            "get_min :: nil → nil;",
+            "get_min :: {rank,value,next_l,next_r} → value."
+          ]
+        },
+        {
+          "@id": "ex:LeftistMinHeaps_Insert",
+          "name": "insert",
+          "specification": "insert :: e heap → heap",
+          "pseudocode": [
+            "insert :: nil nil → nil;",
+            "insert :: value heap → merge {1,value,nil,nil} heap."
+          ]
+        },
+        {
+          "@id": "ex:LeftistMinHeaps_Merge",
+          "name": "merge",
+          "specification": "merge :: heap heap → heap",
+          "pseudocode": [
+            "merge :: nil heap → heap;",
+            "merge :: heap nil → heap;",
+            "merge :: h i →",
+            "    {h_rank, h_value, h_left, h_right} = h",
+            "    {i_rank, i_value, il_sub, ir_sub} = i",
+            "    case",
+            "      h_value =< i_value →",
+            "        build_node h_value h_left (merge h_right i)",
+            "      otherwise →",
+            "        build_node i_value i_left (merge h i_right)."
+          ]
+        },
+        {
+          "@id": "ex:LeftistMinHeaps_BuildNode",
+          "name": "build_node",
+          "specification": "build_node :: e heap heap → heap",
+          "pseudocode": [
+            "build_node :: value h i →",
+            "    case",
+            "      rank h >= rank i →",
+            "        {(rank i)+1,value,h,i};",
+            "      otherwise →",
+            "        {(rank i)+1,value,i,h}."
+          ]
+        },
+        {
+          "@id": "ex:LeftistMinHeaps_Rank",
+          "name": "rank",
+          "specification": "rank :: heap → integer",
+          "pseudocode": [
+            "rank :: nil → 0;",
+            "rank :: {r,value,left,right} → r."
+          ]
+        },
+        {
+          "@id": "ex:LeftistMinHeaps_RemoveMin",
+          "name": "remove_min",
+          "specification": "remove_min :: heap → element",
+          "pseudocode": [
+            "remove_min :: nil → nil;",
+            "remove_min :: {rank,value,left,right} → merge left right."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:Queue",
+      "@type": "DataStructure",
+      "rdfs:label": "Queue",
+      "nodeStructure": {
+        "format": "None"
+      },
+      "functions": [
+        {
+          "@id": "ex:Queue_Empty",
+          "name": "empty",
+          "specification": "empty :: queue → boolean",
+          "pseudocode": [
+            "empty :: {[],[]} → true;",
+            "empty :: queue → false."
+          ]
+        },
+        {
+          "@id": "ex:Queue_Head",
+          "name": "head",
+          "specification": "head :: queue → element or nil",
+          "pseudocode": [
+            "head :: nil → nil;",
+            "head :: {[],[]} → nil;",
+            "head :: {[],[remaining:last]} → last;",
+            "head :: {[h|t],rear} → h."
+          ]
+        },
+        {
+          "@id": "ex:Queue_Tail",
+          "name": "tail",
+          "specification": "tail :: queue → element or nil",
+          "pseudocode": [
+            "tail :: nil → nil;",
+            "tail :: {[],[]} → nil;",
+            "tail :: {[remaining:last],[]} → last;",
+            "tail :: {front,[h|t]} → h."
+          ]
+        },
+        {
+          "@id": "ex:Queue_Enqueue",
+          "name": "enqueue",
+          "specification": "enqueue :: queue e → queue",
+          "pseudocode": [
+            "enqueue :: {[],[]} element → {[element],[]};",
+            "enqueue :: {front,rear} element → {front,[element]⧺rear}."
+          ]
+        },
+        {
+          "@id": "ex:Queue_Dequeue",
+          "name": "dequeue",
+          "specification": "dequeue :: queue → queue",
+          "pseudocode": [
+            "dequeue :: {[],[]} → {[],[]};",
+            "dequeue :: {[h|t],rear} →",
+            "    case",
+            "      when (empty t) → {(reverse rear),[]};",
+            "      otherwise → {t,rear}."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:Deques",
+      "@type": "DataStructure",
+      "rdfs:label": "Deques",
+      "nodeStructure": {
+        "format": "None"
+      },
+      "functions": [
+        {
+          "@id": "ex:Deques_Empty",
+          "name": "empty",
+          "specification": "empty :: deque → boolean",
+          "pseudocode": [
+            "empty :: {[],[]} → true;",
+            "empty :: deque → false."
+          ]
+        },
+        {
+          "@id": "ex:Deques_Head",
+          "name": "head",
+          "specification": "head :: deque → element or nil",
+          "pseudocode": [
+            "head :: nil → nil;",
+            "head :: {[],[]} → nil;",
+            "head :: {[],[remaining:last]} → last;",
+            "head :: {[h|t],rear} → h."
+          ]
+        },
+        {
+          "@id": "ex:Deques_Tail",
+          "name": "tail",
+          "specification": "tail :: deque → element or nil",
+          "pseudocode": [
+            "tail :: nil → nil;",
+            "tail :: {[],[]} → nil;",
+            "tail :: {[remaining:last],[]} → last;",
+            "tail :: {front,[h|t]} → h."
+          ]
+        },
+        {
+          "@id": "ex:Deques_Enqueue",
+          "name": "enqueue",
+          "specification": "enqueue :: deque e → deque",
+          "pseudocode": [
+            "enqueue :: {[],[]} element → {[element],[]};",
+            "enqueue :: {front,rear} element → {front,[element]⧺rear}."
+          ]
+        },
+        {
+          "@id": "ex:Deques_Dequeue",
+          "name": "dequeue",
+          "specification": "dequeue :: deque → deque",
+          "pseudocode": [
+            "dequeue :: {[],[]} → {[],[]};",
+            "dequeue :: {[h|t],rear} →",
+            "    case",
+            "      when (empty t) → {(reverse rear),[]};",
+            "      otherwise → {t,rear}."
+          ]
+        },
+        {
+          "@id": "ex:Deques_EnqueueFront",
+          "name": "enqueue_front",
+          "specification": "enqueue_front :: deque e → deque",
+          "pseudocode": "enqueue_front :: {front,rear} element → {[element]⧺front,rear}."
+        },
+        {
+          "@id": "ex:Deques_DequeueBack",
+          "name": "dequeue_back",
+          "specification": "dequeue_back :: deque → deque",
+          "pseudocode": [
+            "dequeue_back :: {[],[]} → {[],[]};",
+            "dequeue_back :: {[remaining:last],[]} → {remaining,[]};",
+            "dequeue_back :: {f,[h|t]} → {f,t}."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:Tries",
+      "@type": "DataStructure",
+      "rdfs:label": "Tries",
+      "nodeStructure": {
+        "format": "[a ↫ trie]"
+      },
+      "functions": [
+        {
+          "@id": "ex:Tries_Contains",
+          "name": "contains",
+          "specification": "contains :: to_find trie → boolean",
+          "pseudocode": [
+            "contains :: [] trie when end ∈ trie_keys → true;",
+            "contains :: [] trie → false;",
+            "contains :: [h|t] trie when h ∉ trie_keys → false;",
+            "contains :: [h|t] trie → sub_trie = h ↠ trie; contains t sub_trie."
+          ]
+        },
+        {
+          "@id": "ex:Tries_Add",
+          "name": "add",
+          "specification": "add :: to_add trie → trie",
+          "pseudocode": [
+            "add :: [] trie → trie ↞ end nil;",
+            "add :: [h|t] trie when h ∈ trie_keys → sub_trie = h ↠ trie; trie ↞ h (add t sub_trie);",
+            "add :: [h|t] trie otherwise → trie ↞ h (build_branch t)."
+          ]
+        },
+        {
+          "@id": "ex:Tries_BuildBranch",
+          "name": "build_branch",
+          "specification": "build_branch :: to_add → trie",
+          "pseudocode": [
+            "build_branch :: [] → [end ↫ none];",
+            "build_branch :: [h|t] → [h ↫ build_branch t]."
+          ]
+        },
+        {
+          "@id": "ex:Tries_Remove",
+          "name": "remove",
+          "specification": "remove :: to_remove trie → trie",
+          "pseudocode": [
+            "remove :: [] trie when end ∈ trie_keys → trie - end;",
+            "remove :: [] trie → trie;",
+            "remove :: [h|t] trie when h ∉ trie_keys → trie;",
+            "remove :: [h|t] trie →",
+            "    sub_trie = h ↠ trie",
+            "    updated_sub = remove t sub_trie",
+            "    case",
+            "      updated_sub = [ ↫ ] → trie - h;",
+            "      otherwise → trie ↞ h updated_sub."
+          ]
+        },
+        {
+          "@id": "ex:Tries_IsEmpty",
+          "name": "isEmpty",
+          "specification": "isEmpty :: trie → Boolean",
+          "pseudocode": [
+            "isEmpty :: [ ↫ ] → true;",
+            "isEmpty :: trie → false."
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ex:RandomAccessLists",
+      "@type": "DataStructure",
+      "rdfs:label": "Random Access Lists",
+      "structure": {
+        "format": "[{leaf_count,next_l,next_r},{leaf_count,next_l,next_r},...]"
+      },
+      "functions": [
+        {
+          "@id": "ex:RandomAccessLists_Get",
+          "name": "get",
+          "specification": "get :: RAL index → element",
+          "pseudocode": [
+            "get :: [] index → none;",
+            "get :: [{element,none,none}|t] 0 → element;",
+            "get :: RAL index →",
+            "    {skipped_indices, tree} = find_tree RAL index 0",
+            "    case",
+            "      tree = none → none;",
+            "      {leaf_count, _, _} = tree →",
+            "        find_using_traversal_list tree (build_traversal_list index − skipped_indices leaf_count)."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_FindTree",
+          "name": "find_tree",
+          "specification": "find_tree :: RAL index accumulator → {boolean,tree}",
+          "pseudocode": [
+            "find_tree :: [] index accumulator → false;",
+            "find_tree :: [h|t] 0 accumulator → {0,h};",
+            "find_tree :: [{leaf_count,none,none}|t] index accumulator →",
+            "    find_tree t index accum + 1;",
+            "find_tree :: [{leaf_count,next_l,next_r}|t] index accumulator when leaf_count < index - accumulator →",
+            "    find_tree t index accumulator + leaf_count;",
+            "find_tree :: [h|t] index accumulator → {accumulator,h}."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_BuildTraversalList",
+          "name": "build_traversal_list",
+          "specification": "build_traversal_list :: integer integer → [integer]",
+          "pseudocode": [
+            "build_traversal_list :: number 1 → [];",
+            "build_traversal_list :: number bit_space →",
+            "    lesser_power = bit_space ÷ 2",
+            "    case",
+            "      number ≥ lesser_power → [1] ⧺ (build_traversal_list (number - lesser_power) lesser_power);",
+            "      otherwise → [0] ⧺ (build_traversal_list number lesser_power)."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_FindUsingTraversalList",
+          "name": "find_using_traversal_list",
+          "specification": "find_using_traversal_list :: tree traversal_list → element",
+          "pseudocode": [
+            "find_using_traversal_list :: none traversal_list → none;",
+            "find_using_traversal_list :: {element,none,none} [] → element;",
+            "find_using_traversal_list :: {element,next_l,next_r} [0|t] →",
+            "    find_using_traversal_list next_l t;",
+            "find_using_traversal_list :: {element,next_l,next_r} [1|t] →",
+            "    find_using_traversal_list next_r t."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_Update",
+          "name": "update",
+          "specification": "update :: RAL index value accumulator → RAL",
+          "pseudocode": [
+            "update :: [] index value accumulator → error_indicator;",
+            "update :: [{_,none,none}] 0 value accumulator → [{value, none, none}];",
+            "update :: [{leaf_value,none,none}|t] index value accumulator →",
+            "    [{leaf_value, none, none}] ⧺ (update t index value (accumulator + 1));",
+            "update :: [{leaf_count, next_l, next_r}|t] index value accumulator when leaf_count < index - accumulator →",
+            "    [{leaf_count, next_l, next_r}] ⧺ (update t index value (accumulator + leaf_count));",
+            "update :: [h|t] index value accumulator →",
+            "    [replace h (build_traversal_list (index - accumulator)) value] ⧺ t."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_Replace",
+          "name": "replace",
+          "specification": "replace_using_traversal_list :: tree traversal_list value → node",
+          "pseudocode": [
+            "replace_using_traversal_list :: none traversal_list value → error_indicator;",
+            "replace_using_traversal_list :: {old_value,none,none} [] value → {value, none, none};",
+            "replace_using_traversal_list :: {old_value,next_l,none} [] value → replace_using_traversal_list next_l [] value;",
+            "replace_using_traversal_list :: {old_value,none,next_r} [] value → replace_using_traversal_list next_r [] value;",
+            "replace_using_traversal_list :: {weight,next_l,next_r} [0|t] value → {weight,(replace_using_traversal_list next_l t value),next_r};",
+            "replace_using_traversal_list :: {weight,next_l,next_r} [1|t] value → {weight,next_l,(replace_using_traversal_list next_r t value)}."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_Cons",
+          "name": "cons",
+          "specification": "cons :: value RAL → RAL",
+          "pseudocode": [
+            "cons :: value none → (cons [] value);",
+            "cons :: value [] → [{1,value,none,none}];",
+            "cons :: value [{node_value,none,none}|t] → merge {2,{value,none,none},{node_value,none,none}} t;",
+            "cons :: value RAL → [{value,none,none}] ⧺ RAL."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_Merge",
+          "name": "merge",
+          "specification": "merge :: tree RAL → RAL",
+          "pseudocode": [
+            "merge :: tree [] → [tree];",
+            "merge :: {tree_weight,t_next_l,t_next_r} [{head_weight,h_next_l,h_next_r}|t] when tree_weight = head_weight →",
+            "    merge {tree_weight + head_weight, {tree_weight,t_next_l,t_next_r}, {head_weight,h_next_l,h_next_r}} t;",
+            "merge :: tree RAL → [tree] ⧺ RAL."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_Remove",
+          "name": "remove",
+          "specification": "remove :: RAL index accumulator → RAL",
+          "pseudocode": [
+            "remove :: [] index accumulator → error_indicator;",
+            "remove :: [{element,none,none}|t] 0 accumulator → t;",
+            "remove :: [{leaf_value,none,none}|t] index accumulator →",
+            "    [{leaf_value, none, none}] ⧺ (remove t index (accumulator + 1));",
+            "remove :: [{leaf_count, next_l, next_r}|t] index accumulator when leaf_count < index - accumulator →",
+            "    [{leaf_count, next_l, next_r}] ⧺ (remove t index (accumulator + leaf_count));",
+            "remove :: [h|t] index accumulator →",
+            "    [remove_using_traversal_list h (build_traversal_list (index - accumulator))] ⧺ t."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_RemoveUsingTraversalList",
+          "name": "remove_using_traversal_list",
+          "specification": "remove_using_traversal_list :: tree traversal_list → node",
+          "pseudocode": [
+            "remove_using_traversal_list :: none traversal_list → error_indicator;",
+            "remove_using_traversal_list :: {element,none,none} [] → none;",
+            "remove_using_traversal_list :: {element,next_l,none} [] → next_l;",
+            "remove_using_traversal_list :: {element,none,next_r} [] → next_r;",
+            "remove_using_traversal_list :: {weight,next_l,next_r} [0|t] →",
+            "    {weight,(remove_using_traversal_list next_l t),next_r};",
+            "remove_using_traversal_list :: {weight,next_l,next_r} [1|t] →",
+            "    {weight,next_l,(remove_using_traversal_list next_r t)}."
+          ]
+        },
+        {
+          "@id": "ex:RandomAccessLists_Length",
+          "name": "length",
+          "specification": "length :: RAL → Integer",
+          "pseudocode": [
+            "length :: [] → 0;",
+            "length :: [{leaf_count,none,none}|t] → leaf_count + (length t);",
+            "length :: [{leaf_count,next_l,next_r}|t] → leaf_count + (length t)."
+          ]
+        }
+      ]
+    }
+  ]
+}
+
