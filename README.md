@@ -1,6 +1,6 @@
 # PDLearnvu
 
-PDLearnvu is an intelligent learning assistant that helps university juniors learn patterns, data structures, beginning Elixir, and OTP through competency-based education. The system uses a conversational approach with two learning advisors who work together to provide personalized guidance and support.
+PDLearnvu is an intelligent learning assistant that helps users learn patterns, data structures, beginning Elixir, and OTP through competency-based education. The system uses a conversational approach with two learning advisors who work together to provide personalized guidance and support.
 
 ## Architecture
 
@@ -57,7 +57,7 @@ PDLearnvu covers 23 competency topics organized into four areas:
 
 - **Two-Person Conversation**: Two learning advisors respond separately to create a natural, engaging learning experience
 - **Student Name Recognition**: Personas ask for and remember the student's name, using it when addressing them directly
-- **Adaptive Teaching**: Code examples and guidance adapt based on the student's understanding level
+- **Adaptive Teaching**: Code examples and guidance adapt based on the student's understanding level and encourage growth and change
 
 ### Teaching Approach
 
@@ -70,7 +70,7 @@ PDLearnvu covers 23 competency topics organized into four areas:
 
 - **Verification System**: Both personas verify analogies and examples against source files before presenting
 - **Consensus Building**: Personas discuss privately when they disagree, presenting the most accurate option
-- **Assessment Task Detection**: Proactively detects when students are trying to use PDLearnvu for assessment practice and redirects them to PDIntervu
+- **Assessment Task Detection**: Proactively detects when students are trying to use PDLearnvu for assessment practice and redirects them to PDIntervu for assessment through simulated job interviews
 
 ### Natural Interaction
 
