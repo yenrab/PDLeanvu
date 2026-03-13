@@ -41,12 +41,18 @@
           "@id": "ex:Lists_Add",
           "name": "add",
           "specification": "-spec add :: Any List → List",
+          "explanationSteps": [
+            "Purpose: Add element to front of list. Creates new node with element as value and current list as rest. O(1) — no traversal."
+          ],
           "pseudocode": "add :: e current_list → {e,current_list}"
         },
         {
           "@id": "ex:Lists_Pop",
           "name": "pop",
           "specification": "-spec pop :: List → List",
+          "explanationSteps": [
+            "Purpose: Remove first element. nil → nil. Otherwise return sub_list (the rest). O(1)."
+          ],
           "pseudocode": [
             "pop :: nil → nil;",
             "pop :: {element,sub_list} → sub_list."
@@ -56,12 +62,18 @@
           "@id": "ex:Lists_First",
           "name": "first",
           "specification": "-spec first :: List → Any",
+          "explanationSteps": [
+            "Purpose: Return first element. Pattern match head of list. O(1)."
+          ],
           "pseudocode": "first :: {e,sub_list} → e"
         },
         {
           "@id": "ex:Lists_Contains",
           "name": "contains",
           "specification": "-spec contains :: Any List → Boolean",
+          "explanationSteps": [
+            "Purpose: Check if element in list. nil → false. Match at head → true. Else recurse on sub_list. O(n)."
+          ],
           "pseudocode": [
             "contains :: p nil → false;",
             "contains :: p {e,sub_list} when p = e → true;",
@@ -72,6 +84,9 @@
           "@id": "ex:Lists_IsEmpty",
           "name": "isEmpty",
           "specification": "isEmpty :: List → Boolean",
+          "explanationSteps": [
+            "Purpose: Check if list is empty. nil → true, any node → false. O(1)."
+          ],
           "pseudocode": [
             "isEmpty :: nil → true;",
             "isEmpty :: {_,_} → false."
@@ -92,6 +107,9 @@
           "@id": "ex:BinaryTrees_Add",
           "name": "add",
           "specification": "add :: Any BST → BST",
+          "explanationSteps": [
+            "Purpose: Insert element preserving BST order. nil → new leaf. Compare: if e < v go left, else go right; recurse and replace that subtree. O(h) where h is height."
+          ],
           "pseudocode": [
             "add :: e nil → {e,nil,nil};",
             "add :: e {v,next_left,next_right} when e < v → {v,(add e next_left),next_right};",
@@ -102,6 +120,9 @@
           "@id": "ex:BinaryTrees_Contains",
           "name": "contains",
           "specification": "contains :: Any, BST, (comp Any Any → Integer) → Boolean",
+          "explanationSteps": [
+            "Purpose: Search for element. nil → false. comp s v = 0 → true. comp = -1 → recurse left. Else recurse right. O(h)."
+          ],
           "pseudocode": [
             "contains :: s nil comp → false;",
             "contains :: s {v,next_left,next_right} comp when (comp s v) = 0 → true;",
@@ -113,6 +134,9 @@
           "@id": "ex:BinaryTrees_Remove",
           "name": "remove",
           "specification": "remove :: BST Any (comp Any Any → Integer) → BST",
+          "explanationSteps": [
+            "Purpose: Remove element. If not found, recurse left/right. If found: (1) one child nil → return other. (2) two children → replace with min of right subtree, remove that min from right. O(h)."
+          ],
           "pseudocode": [
             "remove :: nil e comp → nil;",
             "remove :: {v,next_left,next_right} e comp when (comp e v) = -1 → {v,(remove next_left e comp),next_right};",
@@ -128,6 +152,9 @@
           "@id": "ex:BinaryTrees_FindMin",
           "name": "find_min",
           "specification": "find_min :: BST → Any",
+          "explanationSteps": [
+            "Purpose: Return minimum value. In BST, min is leftmost. Follow left until nil; return that node's value. O(h)."
+          ],
           "pseudocode": [
             "find_min :: {v,nil,_} → v;",
             "find_min :: {_,next_left,_} → find_min next_left."
@@ -137,6 +164,9 @@
           "@id": "ex:BinaryTrees_IsEmpty",
           "name": "isEmpty",
           "specification": "isEmpty :: BST → Boolean",
+          "explanationSteps": [
+            "Purpose: Check if tree is empty. nil → true, any node → false. O(1)."
+          ],
           "pseudocode": [
             "isEmpty :: nil → true;",
             "isEmpty :: {_,_,_} → false."
@@ -157,6 +187,9 @@
           "@id": "ex:RedBlackTrees_Contains",
           "name": "contains",
           "specification": "contains :: Any, RBT, (comp Any Any → Integer) → Boolean",
+          "explanationSteps": [
+            "Purpose: Search (same as BST). nil → false. Match → true. comp -1 → left, else right. Color ignored for search. O(log n)."
+          ],
           "pseudocode": [
             "contains :: s nil comp → false;",
             "contains :: s {color,v,next_left,next_right} comp when (comp s v) = 0 → true;",
@@ -168,6 +201,9 @@
           "@id": "ex:RedBlackTrees_Add",
           "name": "add",
           "specification": "add :: RBT Any (comp Any Any → Integer) → RBT",
+          "explanationSteps": [
+            "Purpose: Insert element. Delegate to rbt_add_helper (inserts as red), then ensure root is black. Helper recurses like BST add; balance_l/balance_r fix red-red violations on way up."
+          ],
           "pseudocode": [
             "add :: nil e comparator → {black,e,nil,nil};",
             "add :: RBT e comparator →",
@@ -179,6 +215,9 @@
           "@id": "ex:RedBlackTrees_AddHelper",
           "name": "rbt_add_helper",
           "specification": "add_helper :: node Any (comp Any Any → Integer) → root_node",
+          "explanationSteps": [
+            "Purpose: Insert as red leaf; recurse left/right by comparator. After recursion, balance_l or balance_r fixes any red-red violation (black parent with red child that has red child)."
+          ],
           "pseudocode": [
             "rbt_add_helper :: nil e comparator → {red,e,nil,nil};",
             "rbt_add_helper :: {color,value,next_l,next_r} e comparator when comparator e value = -1 → balance_l {color,value,(add_helper next_l e comparator),next_r};",
@@ -189,6 +228,9 @@
           "@id": "ex:RedBlackTrees_BalanceL",
           "name": "balance_l",
           "specification": "balance_l :: {color,Any,RBT,RBT} → RBT",
+          "explanationSteps": [
+            "Purpose: Fix red-red violation when red is on left of left. Two cases: red-left-left (single rotation) and red-left-right (double rotation). Recolors and restructures to satisfy RBT invariants. Otherwise pass through."
+          ],
           "pseudocode": [
             "balance_l :: {black,value,{red,a_value,{red,b_value,b_left,b_right},a_right},next_r} → {red,a_value,{black,b_value,b_left,b_right},{black,value,a_right,next_r}};",
             "balance_l :: {black,value,{red,a_value,a_left,{red,b_value,b_left,b_right}},next_r} → {red,b_value,{black,a_value,a_left,b_left},{black,value,b_right,next_r}};",
@@ -199,6 +241,9 @@
           "@id": "ex:RedBlackTrees_BalanceR",
           "name": "balance_r",
           "specification": "balance_r :: {color,Any,RBT,RBT} → RBT",
+          "explanationSteps": [
+            "Purpose: Fix red-red violation when red is on right of right. Mirror of balance_l. Two cases: red-right-right and red-right-left. Recolors and restructures. Otherwise pass through."
+          ],
           "pseudocode": [
             "balance_r :: {black,value,next_l,{red,a_value,a_left,{red,b_value,b_left,b_right}}} → {red,a_value,{black,value,next_l,a_left},{black,b_value,b_left,b_right}};",
             "balance_r :: {black,value,next_l,{red,a_value,{red,b_value,b_left,b_right},a_right}} → {red,b_value,{black,value,next_l,b_left},{black,a_value,b_right,a_right}};",
@@ -209,6 +254,9 @@
           "@id": "ex:RedBlackTrees_Remove",
           "name": "remove",
           "specification": "remove :: RBT Any (comp Any Any → Integer) → RBT",
+          "explanationSteps": [
+            "Purpose: Remove element. Delegate to rbt_remove_helper (BST-style remove with balance fixes), then ensure root is black. Helper uses balance_l/balance_r to fix black-height violations on way up."
+          ],
           "pseudocode": [
             "remove :: nil e comparator → nil;",
             "remove :: RBT e comparator →",
@@ -220,6 +268,9 @@
           "@id": "ex:RedBlackTrees_RemoveHelper",
           "name": "rbt_remove_helper",
           "specification": "remove_helper :: node Any (comp Any Any → Integer) → root_node",
+          "explanationSteps": [
+            "Purpose: BST-style remove with rebalancing. Recurse left/right if not found. If found: one child → return other; two children → replace with min of right, remove it. balance_l/balance_r fix violations."
+          ],
           "pseudocode": [
             "rbt_remove_helper :: nil e comparator → nil;",
             "rbt_remove_helper :: {color,value,next_l,next_r} e comparator when comparator e value = -1 → balance_l {color,value,(rbt_remove_helper next_l e comparator),next_r};",
@@ -235,6 +286,9 @@
           "@id": "ex:RedBlackTrees_FindMin",
           "name": "rbt_find_min",
           "specification": "rbt_find_min :: RBT → Any",
+          "explanationSteps": [
+            "Purpose: Return minimum (leftmost) value. Same as BST find_min. O(log n)."
+          ],
           "pseudocode": [
             "rbt_find_min :: {_,v,nil,_} → v;",
             "rbt_find_min :: {_,_,next_l,_} → rbt_find_min next_l."
@@ -244,6 +298,9 @@
           "@id": "ex:RedBlackTrees_IsEmpty",
           "name": "isEmpty",
           "specification": "isEmpty :: RBT → Boolean",
+          "explanationSteps": [
+            "Purpose: Check if tree is empty. nil → true, any node → false. O(1)."
+          ],
           "pseudocode": [
             "isEmpty :: nil → true;",
             "isEmpty :: {_,_,_,_} → false."
@@ -263,6 +320,9 @@
           "@id": "ex:LeftistMinHeaps_GetMin",
           "name": "get_min",
           "specification": "get_min :: heap → e",
+          "explanationSteps": [
+            "Purpose: Return minimum (root value). nil → nil. O(1)."
+          ],
           "pseudocode": [
             "get_min :: nil → nil;",
             "get_min :: {rank,value,next_l,next_r} → value."
@@ -272,6 +332,9 @@
           "@id": "ex:LeftistMinHeaps_Insert",
           "name": "insert",
           "specification": "insert :: e heap → heap",
+          "explanationSteps": [
+            "Purpose: Add element. Create singleton heap {1,value,nil,nil}, merge with existing heap. O(log n)."
+          ],
           "pseudocode": [
             "insert :: nil nil → nil;",
             "insert :: value heap → merge {1,value,nil,nil} heap."
@@ -281,6 +344,9 @@
           "@id": "ex:LeftistMinHeaps_Merge",
           "name": "merge",
           "specification": "merge :: heap heap → heap",
+          "explanationSteps": [
+            "Purpose: Combine two heaps. nil → other. Compare roots: smaller becomes new root; merge larger with one subtree; build_node attaches result, swapping children so left rank ≥ right (leftist property). O(log n)."
+          ],
           "pseudocode": [
             "merge :: nil heap → heap;",
             "merge :: heap nil → heap;",
@@ -298,6 +364,9 @@
           "@id": "ex:LeftistMinHeaps_BuildNode",
           "name": "build_node",
           "specification": "build_node :: e heap heap → heap",
+          "explanationSteps": [
+            "Purpose: Create node with value and two subtrees. Rank = 1 + min(rank h, rank i). Put larger-rank subtree on left so leftist property holds (left rank ≥ right rank)."
+          ],
           "pseudocode": [
             "build_node :: value h i →",
             "    case",
@@ -311,6 +380,9 @@
           "@id": "ex:LeftistMinHeaps_Rank",
           "name": "rank",
           "specification": "rank :: heap → integer",
+          "explanationSteps": [
+            "Purpose: Return rank (distance to nearest nil). nil → 0. Used by build_node to maintain leftist property."
+          ],
           "pseudocode": [
             "rank :: nil → 0;",
             "rank :: {r,value,left,right} → r."
@@ -320,6 +392,9 @@
           "@id": "ex:LeftistMinHeaps_RemoveMin",
           "name": "remove_min",
           "specification": "remove_min :: heap → element",
+          "explanationSteps": [
+            "Purpose: Remove minimum (root). nil → nil. Otherwise merge left and right subtrees; result is new heap. O(log n)."
+          ],
           "pseudocode": [
             "remove_min :: nil → nil;",
             "remove_min :: {rank,value,left,right} → merge left right."
@@ -339,6 +414,9 @@
           "@id": "ex:Queue_Empty",
           "name": "empty",
           "specification": "empty :: queue → boolean",
+          "explanationSteps": [
+            "Purpose: Check if queue is empty. Queue is {front,rear} — both lists empty → true. O(1)."
+          ],
           "pseudocode": [
             "empty :: {[],[]} → true;",
             "empty :: queue → false."
@@ -348,6 +426,9 @@
           "@id": "ex:Queue_Head",
           "name": "head",
           "specification": "head :: queue → element or nil",
+          "explanationSteps": [
+            "Purpose: Peek at front element. Queue is {front,rear}. If front empty but rear has elements, reverse rear to get front; head is front's first or rear's last. O(1) amortized."
+          ],
           "pseudocode": [
             "head :: nil → nil;",
             "head :: {[],[]} → nil;",
@@ -359,6 +440,9 @@
           "@id": "ex:Queue_Tail",
           "name": "tail",
           "specification": "tail :: queue → element or nil",
+          "explanationSteps": [
+            "Purpose: Peek at back element. If rear empty but front has elements, 'remaining' is the last; else rear's first. O(1) amortized."
+          ],
           "pseudocode": [
             "tail :: nil → nil;",
             "tail :: {[],[]} → nil;",
@@ -370,6 +454,9 @@
           "@id": "ex:Queue_Enqueue",
           "name": "enqueue",
           "specification": "enqueue :: queue e → queue",
+          "explanationSteps": [
+            "Purpose: Add element to rear. Empty → {[element],[]}. Else prepend element to rear list. O(1)."
+          ],
           "pseudocode": [
             "enqueue :: {[],[]} element → {[element],[]};",
             "enqueue :: {front,rear} element → {front,[element]⧺rear}."
@@ -379,6 +466,9 @@
           "@id": "ex:Queue_Dequeue",
           "name": "dequeue",
           "specification": "dequeue :: queue → queue",
+          "explanationSteps": [
+            "Purpose: Remove front element. Empty → empty. Pop front; if front now empty, reverse rear to become new front. O(1) amortized."
+          ],
           "pseudocode": [
             "dequeue :: {[],[]} → {[],[]};",
             "dequeue :: {[h|t],rear} →",
@@ -401,6 +491,9 @@
           "@id": "ex:Deques_Empty",
           "name": "empty",
           "specification": "empty :: deque → boolean",
+          "explanationSteps": [
+            "Purpose: Check if deque is empty. Same structure as queue: {front,rear}, both empty → true. O(1)."
+          ],
           "pseudocode": [
             "empty :: {[],[]} → true;",
             "empty :: deque → false."
@@ -410,6 +503,9 @@
           "@id": "ex:Deques_Head",
           "name": "head",
           "specification": "head :: deque → element or nil",
+          "explanationSteps": [
+            "Purpose: Peek at front. Same as queue head — front's first or rear's last when front empty. O(1) amortized."
+          ],
           "pseudocode": [
             "head :: nil → nil;",
             "head :: {[],[]} → nil;",
@@ -421,6 +517,9 @@
           "@id": "ex:Deques_Tail",
           "name": "tail",
           "specification": "tail :: deque → element or nil",
+          "explanationSteps": [
+            "Purpose: Peek at back. Same as queue tail — rear's first or front's last when rear empty. O(1) amortized."
+          ],
           "pseudocode": [
             "tail :: nil → nil;",
             "tail :: {[],[]} → nil;",
@@ -432,6 +531,9 @@
           "@id": "ex:Deques_Enqueue",
           "name": "enqueue",
           "specification": "enqueue :: deque e → deque",
+          "explanationSteps": [
+            "Purpose: Add to rear (same as queue enqueue). Prepend to rear list. O(1)."
+          ],
           "pseudocode": [
             "enqueue :: {[],[]} element → {[element],[]};",
             "enqueue :: {front,rear} element → {front,[element]⧺rear}."
@@ -441,6 +543,9 @@
           "@id": "ex:Deques_Dequeue",
           "name": "dequeue",
           "specification": "dequeue :: deque → deque",
+          "explanationSteps": [
+            "Purpose: Remove from front (same as queue dequeue). Pop front; if empty, reverse rear to front. O(1) amortized."
+          ],
           "pseudocode": [
             "dequeue :: {[],[]} → {[],[]};",
             "dequeue :: {[h|t],rear} →",
@@ -453,12 +558,18 @@
           "@id": "ex:Deques_EnqueueFront",
           "name": "enqueue_front",
           "specification": "enqueue_front :: deque e → deque",
+          "explanationSteps": [
+            "Purpose: Add to front. Prepend element to front list. O(1)."
+          ],
           "pseudocode": "enqueue_front :: {front,rear} element → {[element]⧺front,rear}."
         },
         {
           "@id": "ex:Deques_DequeueBack",
           "name": "dequeue_back",
           "specification": "dequeue_back :: deque → deque",
+          "explanationSteps": [
+            "Purpose: Remove from back. Empty → empty. If only rear has elements, pop last. Else pop rear's first. O(1) amortized."
+          ],
           "pseudocode": [
             "dequeue_back :: {[],[]} → {[],[]};",
             "dequeue_back :: {[remaining:last],[]} → {remaining,[]};",
@@ -479,6 +590,9 @@
           "@id": "ex:Tries_Contains",
           "name": "contains",
           "specification": "contains :: to_find trie → boolean",
+          "explanationSteps": [
+            "Purpose: Check if sequence exists in trie. Empty sequence → true if end marker present. Else follow first char's branch; recurse on rest. Missing char → false. O(m) for sequence length m."
+          ],
           "pseudocode": [
             "contains :: [] trie when end ∈ trie_keys → true;",
             "contains :: [] trie → false;",
@@ -490,6 +604,9 @@
           "@id": "ex:Tries_Add",
           "name": "add",
           "specification": "add :: to_add trie → trie",
+          "explanationSteps": [
+            "Purpose: Add sequence to trie. Empty → add end marker. If first char exists, recurse on sub_trie. Else build new branch for rest. O(m)."
+          ],
           "pseudocode": [
             "add :: [] trie → trie ↞ end nil;",
             "add :: [h|t] trie when h ∈ trie_keys → sub_trie = h ↠ trie; trie ↞ h (add t sub_trie);",
@@ -500,6 +617,9 @@
           "@id": "ex:Tries_BuildBranch",
           "name": "build_branch",
           "specification": "build_branch :: to_add → trie",
+          "explanationSteps": [
+            "Purpose: Build chain for new sequence. Empty → create leaf with end marker. Else create node for first char pointing to build_branch of rest. O(m)."
+          ],
           "pseudocode": [
             "build_branch :: [] → [end ↫ none];",
             "build_branch :: [h|t] → [h ↫ build_branch t]."
@@ -509,6 +629,9 @@
           "@id": "ex:Tries_Remove",
           "name": "remove",
           "specification": "remove :: to_remove trie → trie",
+          "explanationSteps": [
+            "Purpose: Remove sequence. Empty → remove end marker. Follow char → recurse on sub_trie. If updated sub empty, remove that branch. O(m)."
+          ],
           "pseudocode": [
             "remove :: [] trie when end ∈ trie_keys → trie - end;",
             "remove :: [] trie → trie;",
@@ -525,6 +648,9 @@
           "@id": "ex:Tries_IsEmpty",
           "name": "isEmpty",
           "specification": "isEmpty :: trie → Boolean",
+          "explanationSteps": [
+            "Purpose: Check if trie has no keys. Empty trie [ ↫ ] → true. O(1)."
+          ],
           "pseudocode": [
             "isEmpty :: [ ↫ ] → true;",
             "isEmpty :: trie → false."
@@ -537,13 +663,25 @@
       "@type": "DataStructure",
       "rdfs:label": "Random Access Lists",
       "structure": {
-        "format": "[{leaf_count,next_l,next_r},{leaf_count,next_l,next_r},...]"
+        "format": "List of complete binary trees. Leaf nodes: {value,none,none} — only leaves have values. Internal nodes: {leaf_count,next_l,next_r} — no value, just leaf count and children.",
+        "note": "In Random Access List trees, only leaves hold element values; internal nodes hold leaf_count for navigation."
+      },
+      "teachingGuidance": {
+        "numberingConventions": {
+          "treeSizes": "Tree sizes (leaf counts): 1, 2, 4, 8, ... — powers of 2. Use when describing tree weights or how many elements a tree holds.",
+          "cumulativeIndices": "Cumulative indices (list positions): 0, 1, 3, 7, 15, ... — where each new tree starts. Use when describing list layout or which tree contains index i.",
+          "consistencyRule": "Within a single explanation, use ONE convention. Do NOT mix (1,2,4,8) and (0,1,3,7) without explicitly labeling which is which. When teaching both, introduce them separately and label clearly."
+        },
+        "functionExplanationFormat": "When explaining cons, get, remove, or find: (1) State the purpose in one sentence. (2) Walk through the cases in order with a concrete example. (3) For get/find: explain find_tree (which tree?) then build_traversal_list (path within tree) then find_using_traversal_list (follow path to leaf). (4) For cons: explain merge (combine same-size trees) and when a new tree is prepended vs merged."
       },
       "functions": [
         {
           "@id": "ex:RandomAccessLists_Get",
           "name": "get",
           "specification": "get :: RAL index → element",
+          "explanationSteps": [
+            "Purpose: Return element at list index. Three steps: (1) find_tree — skip trees until we reach the one containing the index, return that tree and skipped count. (2) build_traversal_list — convert (index − skipped) into a binary path [0,1,0,...] where 0=left, 1=right. (3) find_using_traversal_list — follow the path from root to leaf, return the leaf value."
+          ],
           "pseudocode": [
             "get :: [] index → none;",
             "get :: [{element,none,none}|t] 0 → element;",
@@ -559,13 +697,16 @@
           "@id": "ex:RandomAccessLists_FindTree",
           "name": "find_tree",
           "specification": "find_tree :: RAL index accumulator → {boolean,tree}",
+          "explanationSteps": [
+            "Purpose: Find which tree contains the index. accumulator = number of list elements already skipped. Skip leaves (add 1), skip internal trees (add leaf_count) until index falls within current tree. Return (accumulator, tree) so caller knows offset into that tree."
+          ],
           "pseudocode": [
             "find_tree :: [] index accumulator → false;",
             "find_tree :: [h|t] 0 accumulator → {0,h};",
-            "find_tree :: [{leaf_count,none,none}|t] index accumulator →",
-            "    find_tree t index accum + 1;",
+            "find_tree :: [{value,none,none}|t] index accumulator →",
+            "    find_tree t index (accumulator + 1);",
             "find_tree :: [{leaf_count,next_l,next_r}|t] index accumulator when leaf_count < index - accumulator →",
-            "    find_tree t index accumulator + leaf_count;",
+            "    find_tree t index (accumulator + leaf_count);",
             "find_tree :: [h|t] index accumulator → {accumulator,h}."
           ]
         },
@@ -573,6 +714,9 @@
           "@id": "ex:RandomAccessLists_BuildTraversalList",
           "name": "build_traversal_list",
           "specification": "build_traversal_list :: integer integer → [integer]",
+          "explanationSteps": [
+            "Purpose: Convert local index within a tree into binary path. Given index and tree size (1,2,4,8,...), produce [0,1,0,...] where 0=go left, 1=go right. Splits tree in half: if index ≥ half, go right (1) and subtract half; else go left (0). Recurse on remaining half."
+          ],
           "pseudocode": [
             "build_traversal_list :: number 1 → [];",
             "build_traversal_list :: number bit_space →",
@@ -586,12 +730,15 @@
           "@id": "ex:RandomAccessLists_FindUsingTraversalList",
           "name": "find_using_traversal_list",
           "specification": "find_using_traversal_list :: tree traversal_list → element",
+          "explanationSteps": [
+            "Purpose: Follow binary path to leaf. none → none. At leaf (path empty) → return value. 0 in path → go left. 1 in path → go right. O(log n) for tree size n."
+          ],
           "pseudocode": [
             "find_using_traversal_list :: none traversal_list → none;",
-            "find_using_traversal_list :: {element,none,none} [] → element;",
-            "find_using_traversal_list :: {element,next_l,next_r} [0|t] →",
+            "find_using_traversal_list :: {value,none,none} [] → value;",
+            "find_using_traversal_list :: {leaf_count,next_l,next_r} [0|t] →",
             "    find_using_traversal_list next_l t;",
-            "find_using_traversal_list :: {element,next_l,next_r} [1|t] →",
+            "find_using_traversal_list :: {leaf_count,next_l,next_r} [1|t] →",
             "    find_using_traversal_list next_r t."
           ]
         },
@@ -599,6 +746,9 @@
           "@id": "ex:RandomAccessLists_Update",
           "name": "update",
           "specification": "update :: RAL index value accumulator → RAL",
+          "explanationSteps": [
+            "Purpose: Replace element at index with new value. Same structure as get/remove: find_tree, build_traversal_list, then replace (not remove) at leaf. Preserves tree structure. O(log n)."
+          ],
           "pseudocode": [
             "update :: [] index value accumulator → error_indicator;",
             "update :: [{_,none,none}] 0 value accumulator → [{value, none, none}];",
@@ -614,22 +764,26 @@
           "@id": "ex:RandomAccessLists_Replace",
           "name": "replace",
           "specification": "replace_using_traversal_list :: tree traversal_list value → node",
+          "explanationSteps": [
+            "Purpose: Follow path to leaf, replace its value. At leaf (path empty) → new {value,none,none}. Internal node → recurse left or right, rebuild node with updated child. O(log n)."
+          ],
           "pseudocode": [
             "replace_using_traversal_list :: none traversal_list value → error_indicator;",
             "replace_using_traversal_list :: {old_value,none,none} [] value → {value, none, none};",
-            "replace_using_traversal_list :: {old_value,next_l,none} [] value → replace_using_traversal_list next_l [] value;",
-            "replace_using_traversal_list :: {old_value,none,next_r} [] value → replace_using_traversal_list next_r [] value;",
-            "replace_using_traversal_list :: {weight,next_l,next_r} [0|t] value → {weight,(replace_using_traversal_list next_l t value),next_r};",
-            "replace_using_traversal_list :: {weight,next_l,next_r} [1|t] value → {weight,next_l,(replace_using_traversal_list next_r t value)}."
+            "replace_using_traversal_list :: {leaf_count,next_l,next_r} [0|t] value → {leaf_count,(replace_using_traversal_list next_l t value),next_r};",
+            "replace_using_traversal_list :: {leaf_count,next_l,next_r} [1|t] value → {leaf_count,next_l,(replace_using_traversal_list next_r t value)}."
           ]
         },
         {
           "@id": "ex:RandomAccessLists_Cons",
           "name": "cons",
           "specification": "cons :: value RAL → RAL",
+          "explanationSteps": [
+            "Purpose: Add element to front. Cases: (1) Empty list → new single-leaf tree. (2) Head is same-size tree (both size 1) → merge into size-2 tree, recurse on rest. (3) Otherwise → prepend new single-leaf tree. Merge combines two same-size trees into one; when sizes differ, prepend instead."
+          ],
           "pseudocode": [
             "cons :: value none → (cons [] value);",
-            "cons :: value [] → [{1,value,none,none}];",
+            "cons :: value [] → [{value,none,none}];",
             "cons :: value [{node_value,none,none}|t] → merge {2,{value,none,none},{node_value,none,none}} t;",
             "cons :: value RAL → [{value,none,none}] ⧺ RAL."
           ]
@@ -638,6 +792,9 @@
           "@id": "ex:RandomAccessLists_Merge",
           "name": "merge",
           "specification": "merge :: tree RAL → RAL",
+          "explanationSteps": [
+            "Purpose: Insert tree into RAL. Empty RAL → [tree]. If head tree has same size, combine into larger tree and recurse. Else prepend. Same-size trees become one tree with both as children. O(log n)."
+          ],
           "pseudocode": [
             "merge :: tree [] → [tree];",
             "merge :: {tree_weight,t_next_l,t_next_r} [{head_weight,h_next_l,h_next_r}|t] when tree_weight = head_weight →",
@@ -649,6 +806,9 @@
           "@id": "ex:RandomAccessLists_Remove",
           "name": "remove",
           "specification": "remove :: RAL index accumulator → RAL",
+          "explanationSteps": [
+            "Purpose: Remove element at index. Same structure as get: (1) find_tree locates the tree. (2) build_traversal_list gives path to the leaf. (3) remove_using_traversal_list follows path and replaces that leaf with none (subtree collapses). Cases: index 0 at head → drop head tree; index in current tree → recurse into tree; index past current tree → keep tree, recurse with accumulator += tree size."
+          ],
           "pseudocode": [
             "remove :: [] index accumulator → error_indicator;",
             "remove :: [{element,none,none}|t] 0 accumulator → t;",
@@ -664,24 +824,28 @@
           "@id": "ex:RandomAccessLists_RemoveUsingTraversalList",
           "name": "remove_using_traversal_list",
           "specification": "remove_using_traversal_list :: tree traversal_list → node",
+          "explanationSteps": [
+            "Purpose: Follow path to leaf, remove it. At leaf → none (subtree collapses). Internal node → recurse left or right, rebuild with updated child. O(log n)."
+          ],
           "pseudocode": [
             "remove_using_traversal_list :: none traversal_list → error_indicator;",
-            "remove_using_traversal_list :: {element,none,none} [] → none;",
-            "remove_using_traversal_list :: {element,next_l,none} [] → next_l;",
-            "remove_using_traversal_list :: {element,none,next_r} [] → next_r;",
-            "remove_using_traversal_list :: {weight,next_l,next_r} [0|t] →",
-            "    {weight,(remove_using_traversal_list next_l t),next_r};",
-            "remove_using_traversal_list :: {weight,next_l,next_r} [1|t] →",
-            "    {weight,next_l,(remove_using_traversal_list next_r t)}."
+            "remove_using_traversal_list :: {value,none,none} [] → none;",
+            "remove_using_traversal_list :: {leaf_count,next_l,next_r} [0|t] →",
+            "    {leaf_count,(remove_using_traversal_list next_l t),next_r};",
+            "remove_using_traversal_list :: {leaf_count,next_l,next_r} [1|t] →",
+            "    {leaf_count,next_l,(remove_using_traversal_list next_r t)}."
           ]
         },
         {
           "@id": "ex:RandomAccessLists_Length",
           "name": "length",
           "specification": "length :: RAL → Integer",
+          "explanationSteps": [
+            "Purpose: Count total elements. Sum leaf_count of each tree. Leaf contributes 1, internal tree contributes its leaf_count. O(k) for k trees."
+          ],
           "pseudocode": [
             "length :: [] → 0;",
-            "length :: [{leaf_count,none,none}|t] → leaf_count + (length t);",
+            "length :: [{value,none,none}|t] → 1 + (length t);",
             "length :: [{leaf_count,next_l,next_r}|t] → leaf_count + (length t)."
           ]
         }

@@ -353,6 +353,7 @@
       "@type": "Pattern",
       "rdfs:label": "Lazy Computation",
       "description": "Streams are an excelent way of accomplishing lazy computation. If you need some infinite set of predictable data, this can be done using streams. Processes are a good way to implement streams.",
+      "implementationNote": "This curriculum teaches ONLY the stateful process implementation: a recursive process that waits for a request, updates state before return/use, then passes the updated state to the recursive call. The lambda/thunk approach (returning a lambda that defers computation until invoked) is NOT part of this pattern—it is covered elsewhere.",
       "pseudocode": [
         {
           "description": "A generic stream description",
